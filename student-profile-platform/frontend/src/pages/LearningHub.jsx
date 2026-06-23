@@ -1054,10 +1054,7 @@ export default function LearningHub() {
   const showRail = view !== "input";
 
   return (
-    <div className="min-h-screen bg-[var(--background)] font-sans text-[var(--text)] transition-colors duration-300 relative overflow-hidden">
-      {/* Background ambient light blobs */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-[var(--emerald)]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 -left-20 w-96 h-96 bg-[var(--cyan)]/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-transparent font-sans text-[var(--text)] transition-colors duration-300 relative overflow-hidden">
 
       {/* Sticky Inner Navigation Bar */}
       <div className="flex justify-between items-center px-6 py-4 sticky top-0 bg-[var(--surface)]/80 backdrop-blur-md z-[100] border-b  border-[var(--border)]/80">
