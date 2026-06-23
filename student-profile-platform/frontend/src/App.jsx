@@ -12,6 +12,8 @@ import RecruiterProfile from './pages/RecruiterProfile'
 import AdminPanel from './pages/AdminPanel'
 import Posts from './pages/Posts'
 import Messages from './pages/Messages'
+import LearningHub from './pages/LearningHub'
+import MellowDownloader from './pages/MellowDownloader'
 import { AnimatePresence } from 'framer-motion'
 
 function AnimatedRoutes() {
@@ -30,6 +32,8 @@ function AnimatedRoutes() {
         <Route path="/messages" element={<Messages />} />
         <Route path="/recruiter/:username" element={<RecruiterProfile />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/learning" element={<LearningHub />} />
+        <Route path="/downloader" element={<MellowDownloader />} />
       </Routes>
     </AnimatePresence>
   )

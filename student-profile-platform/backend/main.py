@@ -14,7 +14,7 @@ load_dotenv(env_path)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import profile, skills, projects, certificates, leaderboard, admin, friends, recruiters, posts, messages
+from routes import profile, skills, projects, certificates, leaderboard, admin, friends, recruiters, posts, messages, learning, download
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +42,8 @@ app.include_router(friends.router, prefix="/api/friends", tags=["Friends"])
 app.include_router(recruiters.router, prefix="/api/recruiters", tags=["Recruiters"])
 app.include_router(posts.router, prefix="/api/posts", tags=["Posts"])
 app.include_router(messages.router, prefix="/api/messages", tags=["Messages"])
+app.include_router(learning.router, prefix="/api/learning", tags=["Learning"])
+app.include_router(download.router, prefix="/api/download", tags=["Download"])
 
 @app.on_event("startup")
 async def startup_event():
