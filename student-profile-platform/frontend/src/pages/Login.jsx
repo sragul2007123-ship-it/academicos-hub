@@ -61,13 +61,13 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050816] px-4 relative pt-20 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4 relative pt-20 overflow-hidden">
       {/* Back Button */}
       <Link 
         to="/" 
-        className="absolute top-8 left-8 flex items-center gap-2 group text-gray-400 hover:text-white transition-all font-medium z-20"
+        className="absolute top-8 left-8 flex items-center gap-2 group text-[var(--muted)] hover:text-[var(--background)] transition-all font-medium z-20"
       >
-        <div className="w-8 h-8 rounded-lg bg-[#111111] border border-white/10 flex items-center justify-center group-hover:bg-[#222222]">
+        <div className="w-8 h-8 rounded-lg bg-[var(--surface-2)] border-[var(--border)] flex items-center justify-center group-hover:bg-[var(--glass)]">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
@@ -77,8 +77,8 @@ export default function Login() {
 
       {/* Premium Background Effects */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary-600/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-accent-600/20 rounded-full blur-[150px] mix-blend-screen pointer-events-none animate-float-delayed"></div>
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[var(--cyan)]/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float"></div>
+        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[var(--emerald)]/20 rounded-full blur-[150px] mix-blend-screen pointer-events-none animate-float-delayed"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
       </div>
 
@@ -88,20 +88,20 @@ export default function Login() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative z-10 w-full max-w-md"
       >
-        <div className="bg-[#0f111a]/80 backdrop-blur-2xl border border-white/10 p-8 sm:p-10 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        <div className="glass-card border-[var(--border)] p-8 sm:p-10 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
           {/* Logo */}
           <div className="flex items-center justify-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--cyan)] to-[var(--emerald)] flex items-center justify-center shadow-[0_0_30px_rgba(0,212,255,0.3)]">
+              <svg className="w-7 h-7 text-[var(--text)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
           </div>
 
-          <h1 className="text-3xl font-display font-bold text-center mb-2 text-white tracking-tight">
+          <h1 className="text-3xl font-display font-bold text-center mb-2 text-[var(--text)] tracking-tight">
             {isRegister ? 'Create Account' : (isMagicLink ? 'Passwordless Sign In' : 'Welcome Back')}
           </h1>
-          <p className="text-center text-sm text-gray-400 mb-8">
+          <p className="text-center text-sm text-[var(--muted)] mb-8">
             {isRegister 
               ? 'Join the premium Academic Identity Platform' 
               : (isMagicLink ? "We'll send a secure login link to your inbox" : 'Sign in to your Academic Command Center')}
@@ -129,11 +129,11 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-4 mb-8">
             {isRegister && (
               <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Full Name</label>
+                <label className="block text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2">Full Name</label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-3.5 rounded-xl bg-[#111111] border border-white/5 text-white placeholder-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] placeholder-[var(--muted)] focus:ring-2 focus:ring-[var(--cyan)] focus:border-transparent outline-none transition-all"
                   placeholder="Alex Johnson"
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -141,11 +141,11 @@ export default function Login() {
               </motion.div>
             )}
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
+              <label className="block text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2">Email Address</label>
               <input
                 type="email"
                 required
-                className="w-full px-4 py-3.5 rounded-xl bg-[#111111] border border-white/5 text-white placeholder-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] placeholder-[var(--muted)] focus:ring-2 focus:ring-[var(--cyan)] focus:border-transparent outline-none transition-all"
                 placeholder="name@university.edu"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -162,11 +162,11 @@ export default function Login() {
                   className="overflow-hidden"
                 >
                   <div className="pt-2">
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Password</label>
+                    <label className="block text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2">Password</label>
                     <input
                       type="password"
                       required={!isMagicLink}
-                      className="w-full px-4 py-3.5 rounded-xl bg-[#111111] border border-white/5 text-white placeholder-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] placeholder-[var(--muted)] focus:ring-2 focus:ring-[var(--cyan)] focus:border-transparent outline-none transition-all"
                       placeholder="••••••••"
                       value={password}
                       onChange={e => setPassword(e.target.value)}
@@ -174,11 +174,11 @@ export default function Login() {
                   </div>
                   {isRegister && (
                     <div className="pt-4">
-                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Confirm Password</label>
+                      <label className="block text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2">Confirm Password</label>
                       <input
                         type="password"
                         required
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#111111] border border-white/5 text-white placeholder-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] placeholder-[var(--muted)] focus:ring-2 focus:ring-[var(--cyan)] focus:border-transparent outline-none transition-all"
                         placeholder="••••••••"
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
@@ -194,7 +194,7 @@ export default function Login() {
                 <button 
                   type="button"
                   onClick={() => setIsMagicLink(!isMagicLink)}
-                  className="text-xs font-bold text-primary-400 hover:text-primary-300 transition-colors"
+                  className="text-xs font-bold text-[var(--cyan)] hover:text-[var(--cyan)] transition-colors"
                 >
                   {isMagicLink ? 'Use Password instead' : 'Sign in with Magic Link'}
                 </button>
@@ -204,7 +204,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={authLoading}
-              className="w-full py-4 mt-4 rounded-xl font-bold text-white bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.1)]"
+              className="w-full py-4 mt-4 rounded-xl bg-gradient-to-r from-[var(--cyan)] to-[var(--emerald)] border-none text-[var(--background)] font-black uppercase tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(0,212,255,0.3)] hover:shadow-[0_0_25px_rgba(0,255,198,0.4)] cursor-pointer"
             >
               {authLoading ? 'Authenticating...' : (
                 isRegister ? 'Create Account' : (isMagicLink ? 'Send Magic Link' : 'Sign In')
@@ -216,15 +216,15 @@ export default function Login() {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-white/10"></div>
             </div>
-            <div className="relative flex justify-center text-xs uppercase font-bold text-gray-500">
-              <span className="bg-[#0f111a] px-4">Or continue with</span>
+            <div className="relative flex justify-center text-xs uppercase font-bold text-[var(--muted)]">
+              <span className="bg-[var(--background)] px-4">Or continue with</span>
             </div>
           </div>
 
           {/* Google Sign In Button */}
           <button
             onClick={signInWithGoogle}
-            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-[#111111] hover:bg-[#1a1a24] border border-white/5 hover:border-white/10 transition-all duration-300 group"
+            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-[var(--surface-2)] hover:bg-[var(--glass)] border border-[var(--border)] hover:border-[var(--cyan)]/50 transition-all duration-300 group"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -232,18 +232,18 @@ export default function Login() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            <span className="font-bold text-gray-300 group-hover:text-white transition-colors">
+            <span className="font-bold text-gray-300 group-hover:text-[var(--text)] transition-colors">
               Google Account
             </span>
           </button>
         </div>
 
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-[var(--muted)]">
             {isRegister ? 'Already have an account?' : "Don't have an account yet?"}
             <Link 
               to={isRegister ? '/login' : '/register'} 
-              className="ml-2 font-bold text-white hover:text-primary-400 transition-colors"
+              className="ml-2 font-bold text-[var(--text)] hover:text-[var(--cyan)] transition-colors"
             >
               {isRegister ? 'Sign In' : 'Create Account'}
             </Link>
