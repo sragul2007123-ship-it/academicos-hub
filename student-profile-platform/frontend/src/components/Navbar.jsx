@@ -50,7 +50,7 @@ export default function Navbar() {
               </svg>
             </div>
             <span className="font-display font-bold text-xl text-gray-900 dark:text-white">
-              StudentProfile
+              AcademicOS
             </span>
           </Link>
 
@@ -86,7 +86,7 @@ export default function Navbar() {
                 <Link to="/dashboard" className="btn-ghost">Dashboard</Link>
               </>
             )}
-            {user?.email === 'admin@studentprofile.com' && (
+            {user?.email === 'admin@academicos.com' && (
               <Link to="/admin" className="btn-ghost">Admin</Link>
             )}
 

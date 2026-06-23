@@ -37,20 +37,24 @@ function AnimatedRoutes() {
   )
 }
 
+import { ReactLenis } from '@studio-freight/react-lenis'
+
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <div className="min-h-screen bg-white dark:bg-surface-900 transition-colors duration-300">
-            <Navbar />
-            <main className="pt-14 sm:pt-16">
-              <AnimatedRoutes />
-            </main>
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <ReactLenis root options={{ lerp: 0.05, smoothWheel: true }}>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <div className="min-h-screen bg-[#050816] transition-colors duration-300">
+              <Navbar />
+              <main className="pt-14 sm:pt-16">
+                <AnimatedRoutes />
+              </main>
+            </div>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
+    </ReactLenis>
   )
 }
 

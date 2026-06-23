@@ -456,120 +456,182 @@ export default function Dashboard() {
         </AnimatePresence>
 
         {!isEditing ? (
-          <>
-            {/* Premium Profile Header Card */}
-            <div className="glass-card p-8 mb-8 border-none shadow-2xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/5 rounded-full -mr-32 -mt-32 filter blur-3xl group-hover:bg-primary-500/10 transition-colors"></div>
-              <header className="flex flex-col md:flex-row gap-8 items-center relative z-10">
-                <div className="shrink-0">
-                  <div className="w-[160px] h-[160px] rounded-[40px] p-1 bg-gradient-to-tr from-primary-500 via-accent-500 to-primary-500 shadow-2xl rotate-3 hover:rotate-0 transition-transform cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                    <div className="w-full h-full rounded-[36px] bg-white dark:bg-surface-900 overflow-hidden flex items-center justify-center p-1">
-                      {profile.profile_photo ? (
-                        <img src={profile.profile_photo} className="w-full h-full object-cover rounded-[34px]" alt="profile" />
-                      ) : (
-                        <span className="text-5xl font-display font-bold text-gray-200">{profile.name?.[0]}</span>
-                      )}
-                    </div>
-                  </div>
-                  <input type="file" ref={fileInputRef} onChange={handlePhotoUpload} accept="image/*" className="hidden" />
-                </div>
-
-                <div className="flex-1 text-center md:text-left">
-                  <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
-                    <h2 className="text-3xl font-display font-bold dark:text-gray-100">@{profile.username || 'username'}</h2>
-                    <div className="flex gap-2">
-                      <button onClick={() => setIsEditing(true)} className="btn-primary py-2 px-6 shadow-none text-sm">
-                        Edit Profile
-                      </button>
-                      <a href={`/student/${profile.username}`} target="_blank" rel="noreferrer" className="btn-ghost bg-gray-100 dark:bg-surface-800 border-none text-sm">
-                        View Live
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center md:justify-start gap-8 mb-6 text-sm text-gray-500 dark:text-gray-400">
-                    <div className="flex flex-col items-center md:items-start"><span className="text-lg font-bold dark:text-white">{projects.length}</span> Post</div>
-                    <div className="flex flex-col items-center md:items-start"><span className="text-lg font-bold dark:text-white">{friends.length}</span> Friends</div>
-                    <div className="flex flex-col items-center md:items-start"><span className="text-lg font-bold dark:text-white">{skills.length}</span> Skills</div>
-                  </div>
-
-                  <div className="text-gray-600 dark:text-gray-300">
-                    <h1 className="text-xl font-bold dark:text-white mb-1">{profile.name || 'Your Name'}</h1>
-                    <p className="font-medium text-primary-500 mb-2">{profile.role || 'Professional Role'}</p>
-                    <p className="leading-relaxed max-w-xl line-clamp-2 md:line-clamp-none">{profile.about || 'Tell people about yourself...'}</p>
-                  </div>
-                </div>
-              </header>
-            </div>
-
-            {/* Highlights (Skills) */}
-            <section className="flex gap-6 mb-11 overflow-x-auto pb-4 scrollbar-hide">
-              <div 
-                onClick={() => { setIsEditing(true); setActiveTab('skills'); }}
-                className="flex flex-col items-center gap-2 min-w-[77px] cursor-pointer group"
-              >
-                <div className="w-[77px] h-[77px] rounded-full border border-gray-200 dark:border-surface-800 flex items-center justify-center p-1 group-hover:bg-gray-50 dark:group-hover:bg-surface-900 transition-colors">
-                  <div className="w-full h-full rounded-full border border-gray-200 dark:border-surface-700 flex items-center justify-center text-3xl font-light text-gray-400">+</div>
-                </div>
-                <span className="text-[12px] font-bold dark:text-gray-400">Add Skill</span>
+          <div className="animate-fade-in">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 mt-4">
+              <div>
+                <h1 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">Academic Command Center</h1>
+                <p className="text-gray-400 font-medium mt-1">Welcome back, {profile.name?.split(' ')[0] || 'Student'}. Your identity score is looking strong.</p>
               </div>
-              {skills.slice(0, 10).map((skill, index) => (
-                <div key={index} className="flex flex-col items-center gap-2 min-w-[77px]">
-                  <div className="w-[77px] h-[77px] rounded-full p-0.5 border border-gray-200 dark:border-surface-800">
-                    <div className="w-full h-full rounded-full bg-gray-50 dark:bg-surface-900 border-4 border-white dark:border-black flex items-center justify-center text-xs font-bold text-gray-500 overflow-hidden text-center p-1">
-                      {skill.skill_name}
+              <div className="flex items-center gap-4">
+                <button onClick={() => setIsEditing(true)} className="px-6 py-2.5 rounded-xl font-bold bg-[#111111] border border-white/10 text-white hover:bg-[#1a1a24] transition-all flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  Settings
+                </button>
+                <a href={`/student/${profile.username}`} target="_blank" rel="noreferrer" className="px-6 py-2.5 rounded-xl font-bold bg-white text-black hover:bg-gray-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                  View Public Profile
+                </a>
+              </div>
+            </div>
+
+            {/* Bento Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 auto-rows-[160px]">
+              
+              {/* Identity Score Card (Spans 2x2) */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="col-span-1 md:col-span-2 row-span-2 glass-card p-6 md:p-8 relative overflow-hidden group cursor-pointer border-primary-500/20 shadow-[0_0_30px_rgba(99,102,241,0.05)] hover:shadow-[0_0_40px_rgba(99,102,241,0.1)]"
+              >
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary-500/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary-500/30 transition-colors"></div>
+                
+                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Academic Identity Score</h3>
+                <div className="flex flex-col sm:flex-row items-center gap-8">
+                  <div className="relative w-40 h-40 shrink-0">
+                    <svg className="w-full h-full transform -rotate-90">
+                      <circle cx="80" cy="80" r="70" className="stroke-[#111111]" strokeWidth="12" fill="none" />
+                      <circle cx="80" cy="80" r="70" className="stroke-primary-500 transition-all duration-1500" strokeWidth="12" fill="none" strokeLinecap="round" strokeDasharray="439.8" strokeDashoffset={439.8 - (439.8 * completionPercent) / 100} />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-4xl font-display font-black text-white">{completionPercent}</span>
+                      <span className="text-xs font-bold text-primary-400">/ 100</span>
                     </div>
                   </div>
-                  <span className="text-[12px] font-medium dark:text-gray-300">{skill.skill_name.split(' ')[0]}</span>
-                </div>
-              ))}
-            </section>
-
-            {/* Tabs */}
-            <div className="border-t border-gray-200 dark:border-surface-800 flex justify-center gap-14 -mt-px">
-              <button 
-                onClick={() => setActiveTab('profile')}
-                className={`flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t transition-all ${activeTab === 'profile' ? 'border-black dark:border-white text-black dark:text-white' : 'border-transparent text-gray-400'}`}
-              >
-                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                PROJECTS
-              </button>
-              <button 
-                onClick={() => { setIsEditing(true); setActiveTab('projects'); }}
-                className="flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase text-primary-500 hover:text-primary-600 transition-colors"
-              >
-                + ADD POST
-              </button>
-            </div>
-
-            {/* Projects Grid */}
-            <div className="grid grid-cols-3 gap-1 sm:gap-7 mt-px">
-              {projects.map((project, index) => (
-                <motion.div 
-                  key={index} 
-                  initial={{opacity: 0, scale: 0.9}}
-                  animate={{opacity: 1, scale: 1}}
-                  className="relative aspect-square bg-gray-100 dark:bg-surface-800 overflow-hidden group cursor-pointer"
-                >
-                  {project.image_url ? (
-                    <img src={project.image_url} className="w-full h-full object-cover group-hover:opacity-75 transition-opacity" alt="post" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold p-2 text-center">{project.title}</div>
-                  )}
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-6 text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={() => deleteProject(project.id)} className="p-2 bg-red-500 rounded-full hover:bg-red-600">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                    </button>
+                  
+                  <div className="w-full flex-1 space-y-4">
+                    <div>
+                      <div className="flex justify-between text-xs font-bold text-gray-400 mb-2">
+                        <span>Profile Completion</span>
+                        <span className="text-white">{completionPercent}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-[#111111] rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary-600 to-accent-500 rounded-full" style={{width: `${completionPercent}%`}}></div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 mt-6">
+                      <div className="bg-[#111111] p-3 rounded-xl border border-white/5">
+                        <p className="text-[10px] uppercase font-bold text-gray-500 mb-1">Placement Readiness</p>
+                        <p className="text-lg font-bold text-emerald-400">High</p>
+                      </div>
+                      <div className="bg-[#111111] p-3 rounded-xl border border-white/5">
+                        <p className="text-[10px] uppercase font-bold text-gray-500 mb-1">Profile Views</p>
+                        <p className="text-lg font-bold text-white">24</p>
+                      </div>
+                    </div>
                   </div>
-                </motion.div>
-              ))}
-              {projects.length === 0 && (
-                <div className="col-span-3 py-10 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-surface-800 rounded-xl">
-                  <p className="text-gray-400">No projects yet. Add your first post!</p>
                 </div>
-              )}
+              </motion.div>
+
+              {/* Quick Stats Grid */}
+              <div className="col-span-1 row-span-1 glass-card p-6 flex flex-col justify-between hover:border-accent-500/30 transition-colors group cursor-pointer" onClick={() => { setIsEditing(true); setActiveTab('projects'); }}>
+                <div className="w-10 h-10 rounded-xl bg-accent-500/10 flex items-center justify-center text-accent-400 mb-2 group-hover:scale-110 transition-transform">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-display font-black text-white">{projects.length}</h3>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Total Posts</p>
+                </div>
+              </div>
+
+              <div className="col-span-1 row-span-1 glass-card p-6 flex flex-col justify-between hover:border-blue-500/30 transition-colors group cursor-pointer" onClick={() => { setIsEditing(true); setActiveTab('skills'); }}>
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-2 group-hover:scale-110 transition-transform">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-display font-black text-white">{skills.length}</h3>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Skills Verified</p>
+                </div>
+              </div>
+
+              {/* Achievements/Certificates */}
+              <div className="col-span-1 md:col-span-2 row-span-1 glass-card p-6 flex items-center gap-6 overflow-hidden relative group border-white/5 hover:border-emerald-500/20 transition-colors cursor-pointer" onClick={() => { setIsEditing(true); setActiveTab('certificates'); }}>
+                <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0f111a] to-transparent z-10 pointer-events-none"></div>
+                
+                <div className="shrink-0 z-20 bg-[#0f111a] pr-6">
+                  <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-1">Certifications</h3>
+                  <p className="text-2xl font-black text-white">{certificates.length} Earned</p>
+                </div>
+
+                <div className="flex gap-4 overflow-x-auto scrollbar-hide flex-1">
+                  {certificates.length === 0 ? (
+                    <div className="px-4 py-3 bg-[#111111] border border-white/5 rounded-xl text-sm text-gray-500 font-medium whitespace-nowrap">
+                      No certifications yet
+                    </div>
+                  ) : (
+                    certificates.map((cert, i) => (
+                      <div key={i} className="px-4 py-3 bg-[#111111] border border-white/5 rounded-xl flex items-center gap-3 shrink-0 group-hover:bg-[#151520] transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">📜</div>
+                        <div>
+                          <p className="text-sm font-bold text-white max-w-[150px] truncate">{cert.title}</p>
+                          <p className="text-[10px] text-gray-500 font-medium">Verified</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* AI Career Insights Widget */}
+              <div className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 glass-card p-6 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-900/20 via-transparent to-accent-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white shadow-lg">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest">AI Career Insights</h3>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-md bg-primary-500/20 text-primary-400 text-[10px] font-black uppercase tracking-wider">Beta</span>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="p-4 rounded-xl bg-[#111111] border border-white/5 relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500"></div>
+                    <p className="text-sm text-gray-300 leading-relaxed font-medium">
+                      "Adding <strong className="text-white">2 React projects</strong> to your portfolio could increase your recruiter visibility score by 12%."
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#111111] border border-white/5 relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+                    <p className="text-sm text-gray-300 leading-relaxed font-medium">
+                      "Your Machine Learning skill level is high, consider adding a <strong className="text-white">certification</strong> to validate it."
+                    </p>
+                  </div>
+                </div>
+                
+                <button className="w-full mt-6 py-3 rounded-xl font-bold text-sm text-white bg-white/5 hover:bg-white/10 transition-colors">
+                  View Full Analysis
+                </button>
+              </div>
+
+              {/* Mini Feed / Recent Activity */}
+              <div className="col-span-1 md:col-span-2 row-span-1 glass-card p-6 flex flex-col justify-center">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Recent Post</h3>
+                  <button onClick={() => navigate('/posts')} className="text-xs font-bold text-primary-400 hover:text-primary-300 transition-colors">View Feed →</button>
+                </div>
+                
+                {projects.length > 0 ? (
+                  <div className="flex items-center gap-4 bg-[#111111] p-4 rounded-xl border border-white/5">
+                    {projects[0].image_url ? (
+                      <img src={projects[0].image_url} alt="post" className="w-16 h-16 rounded-lg object-cover" />
+                    ) : (
+                      <div className="w-16 h-16 rounded-lg bg-surface-800 flex items-center justify-center text-xs font-bold text-gray-500">Text</div>
+                    )}
+                    <div>
+                      <p className="text-sm font-bold text-white max-w-full truncate">{projects[0].title || projects[0].content}</p>
+                      <p className="text-[10px] text-gray-500 font-medium mt-1 uppercase">Posted recently</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-20 border border-dashed border-white/10 rounded-xl">
+                    <p className="text-xs font-medium text-gray-500">No recent activity</p>
+                  </div>
+                )}
+              </div>
+
             </div>
-          </>
+          </div>
         ) : (
           /* Profile Editing View (Current Dashboard Content) */
           <div className="animate-fade-in">

@@ -1,6 +1,33 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Canvas } from '@react-three/fiber'
+import { Sphere, MeshDistortMaterial, OrbitControls, Float } from '@react-three/drei'
+import { useRef } from 'react'
+
+function AnimatedSphere() {
+  return (
+    <Canvas camera={{ position: [0, 0, 5] }}>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[2, 5, 2]} intensity={2} color="#818cf8" />
+      <directionalLight position={[-2, -5, -2]} intensity={1} color="#c026d3" />
+      <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+        <Sphere args={[1.5, 64, 64]}>
+          <MeshDistortMaterial 
+            color="#4f46e5" 
+            attach="material" 
+            distort={0.4} 
+            speed={2} 
+            roughness={0.2} 
+            metalness={0.8}
+            wireframe={true}
+          />
+        </Sphere>
+      </Float>
+      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+    </Canvas>
+  )
+}
 
 const features = [
   {
@@ -95,18 +122,16 @@ export default function LandingPage() {
     <div className="overflow-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center gradient-bg-subtle">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-400/20 rounded-full filter blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent-400/20 rounded-full filter blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-300/10 rounded-full filter blur-3xl"></div>
+        {/* 3D Sphere Background */}
+        <div className="absolute inset-0 z-0 opacity-50 mix-blend-screen pointer-events-none">
+          <AnimatedSphere />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-16">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-sm font-medium mb-8 animate-fade-in">
-            <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
-            Open for all students
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#111111]/80 border border-slate-800 text-primary-400 text-sm font-medium mb-8 backdrop-blur-xl shadow-2xl">
+            <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse-subtle shadow-[0_0_10px_#6366f1]"></span>
+            Academic Identity Platform
           </div>
 
           {/* Title */}
@@ -117,9 +142,9 @@ export default function LandingPage() {
             className="text-5xl sm:text-6xl lg:text-7xl font-display font-extrabold leading-tight mb-6"
           >
             Build Your{' '}
-            <span className="gradient-text-animate">Student</span>
+            <span className="gradient-text-animate">Academic</span>
             <br />
-            <span className="gradient-text-animate">Digital Profile</span>
+            <span className="gradient-text-animate">OS</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -157,72 +182,36 @@ export default function LandingPage() {
             )}
           </motion.div>
 
-          {/* Animated Student Journey Graphic (Replaced legacy stats) */}
-          <div className="mt-20 relative h-40 max-w-2xl mx-auto hidden sm:flex items-center justify-center">
-            {/* Project Card */}
+          {/* Floating UI Elements */}
+          <div className="mt-20 relative h-60 max-w-4xl mx-auto hidden md:block">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-transparent to-transparent z-10" />
+            
             <motion.div 
-              animate={{ 
-                y: [0, -15, 0],
-                x: [0, 5, 0]
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-4 lg:-left-20 top-0 p-4 glass-card border-blue-500/20 shadow-xl shadow-blue-500/10"
+              animate={{ y: [-10, 10, -10] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute left-[10%] top-10 glass-card p-4 flex items-center gap-4 z-20 border-primary-500/30 w-64 shadow-[0_0_30px_rgba(99,102,241,0.2)]"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-xl">🚀</div>
-                <div className="text-left">
-                  <p className="text-[10px] uppercase font-black tracking-widest text-blue-500">Projects</p>
-                  <p className="text-sm font-bold dark:text-white">Creative Portfolios</p>
-                </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xl">📜</div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Certified</p>
+                <p className="font-bold text-white text-sm">Advanced React Patterns</p>
               </div>
             </motion.div>
 
-            {/* Middle Logo/Orbit Center */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="w-24 h-24 rounded-3xl gradient-bg flex items-center justify-center text-white shadow-2xl shadow-primary-500/40 z-20"
-            >
-              <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </motion.div>
-
-            {/* Social Card */}
             <motion.div 
-              animate={{ 
-                y: [0, 15, 0],
-                x: [0, -5, 0]
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute right-4 lg:-right-20 bottom-4 p-4 glass-card border-purple-500/20 shadow-xl shadow-purple-500/10"
+              animate={{ y: [10, -10, 10] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute right-[10%] top-20 glass-card p-4 flex items-center gap-4 z-20 border-accent-500/30 w-64 shadow-[0_0_30px_rgba(217,70,239,0.2)]"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-xl">💬</div>
-                <div className="text-left">
-                  <p className="text-[10px] uppercase font-black tracking-widest text-purple-500">Messages</p>
-                  <p className="text-sm font-bold dark:text-white">Active Chats</p>
-                </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl">🚀</div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-pink-400 uppercase tracking-wider">Project Shipped</p>
+                <p className="font-bold text-white text-sm">AI Learning Hub</p>
               </div>
             </motion.div>
 
-            {/* Skills Bubble */}
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.1, 1],
-                opacity: [0.7, 1, 0.7]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute top-[-20px] right-[20%] p-2 px-4 rounded-full glass-card border-amber-500/20 text-xs font-bold dark:text-amber-400 flex items-center gap-2"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span> New Skill Added
-            </motion.div>
-
-            {/* Connection Line Decoration */}
-             <div className="absolute inset-0 flex items-center justify-center -z-10 opacity-30">
-                <div className="w-full max-w-lg h-[2px] bg-gradient-to-r from-transparent via-primary-500/40 to-transparent rotate-12 blur-sm"></div>
-                <div className="w-full max-w-lg h-[2px] bg-gradient-to-r from-transparent via-accent-500/40 to-transparent -rotate-12 blur-sm"></div>
-             </div>
+            {/* Glowing orb in center bottom */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary-600/30 rounded-full filter blur-[100px] z-0 pointer-events-none" />
           </div>
 
 
@@ -247,7 +236,9 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-white dark:bg-surface-900" id="features">
+      <section className="py-24 bg-[#0a0a0f] relative overflow-hidden" id="features">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent" />
+        <div className="absolute -left-[500px] top-40 w-[1000px] h-[1000px] bg-primary-500/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="section-title mb-4">
@@ -294,7 +285,8 @@ export default function LandingPage() {
       </section>
 
       {/* Example Profile Preview */}
-      <section className="py-24 gradient-bg-subtle" id="preview">
+      <section className="py-32 bg-[#050816] relative" id="preview">
+        <div className="absolute -right-[500px] top-40 w-[1000px] h-[1000px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="section-title mb-4">
@@ -306,7 +298,8 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto glass-card p-8 md:p-12">
+          <div className="max-w-4xl mx-auto glass-card border-white/10 p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             {/* Profile Header */}
             <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
               <div className="w-28 h-28 rounded-full gradient-bg flex items-center justify-center text-white text-4xl font-display font-bold shadow-2xl shadow-primary-500/30">
@@ -409,10 +402,10 @@ export default function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <span className="font-display font-bold text-gray-900 dark:text-white">StudentProfile</span>
+              <span className="font-display font-bold text-gray-900 dark:text-white">AcademicOS</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              © 2026 Student Digital Profile Platform. All rights reserved.
+              © 2026 AcademicOS Platform. All rights reserved.
             </p>
           </div>
         </div>
