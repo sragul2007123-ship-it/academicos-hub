@@ -50,7 +50,7 @@ export default function Navbar() {
               </svg>
             </div>
             <span className="font-display font-bold text-xl text-gray-900 dark:text-white">
-              AcademicOS
+              academicos
             </span>
           </Link>
 
