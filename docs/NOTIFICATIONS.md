@@ -44,10 +44,17 @@ This repo includes a serverless endpoint you can use to forward Vercel webhooks 
 
 - Endpoint: `/api/vercel-webhook`
 - Requires these repository secrets:
+
+- Endpoint: `/api/vercel-webhook`
+- Requires these repository secrets:
 	- `SENDGRID_API_KEY` — SendGrid API key with `mail.send` permission
 	- `SENDGRID_FROM` — From email address used in messages
 	- `SENDGRID_TO` — Recipient(s), comma-separated
-	- `VERCEL_WEBHOOK_SECRET` (optional) — If set, the endpoint expects the Vercel webhook to include header `x-vercel-signature` equal to this secret. This provides a simple verification check.
+	- `SENDGRID_TEMPLATE_ID` — (optional) SendGrid dynamic template id for HTML emails
+	- `VERCEL_WEBHOOK_SECRET` — secret used to verify webhook signature (HMAC-SHA256 of raw body)
+	- `CREATE_GITHUB_ISSUE` — (optional) set to `true` to create a GitHub issue on failed deployments
+	- `GITHUB_TOKEN` — required if `CREATE_GITHUB_ISSUE=true` (a repo-scoped token)
+	- `GITHUB_REPO` — required if `CREATE_GITHUB_ISSUE=true` (format: owner/repo)
 
 How to configure Vercel:
 1. In your Vercel project > Settings > Git > Webhooks (or Integrations > Webhooks), create a webhook.
@@ -55,7 +62,8 @@ How to configure Vercel:
 3. If you set a secret in Vercel, set the same value to `VERCEL_WEBHOOK_SECRET` in your repo secrets.
 
 Notes on security:
-- The endpoint performs a simple header equality check when `VERCEL_WEBHOOK_SECRET` is set. For stronger verification, you can implement HMAC verification using the raw request body and a secret.
+- The endpoint verifies HMAC-SHA256 of the raw request body against the `x-vercel-signature` header when `VERCEL_WEBHOOK_SECRET` is set.
+- Keep `VERCEL_WEBHOOK_SECRET`, `SENDGRID_API_KEY`, and `GITHUB_TOKEN` secure in repository or deployment secrets.
 
 ## 4) Next steps I can implement for you
 - Replace the simple signature check with HMAC-SHA256 verification using the raw request body.
