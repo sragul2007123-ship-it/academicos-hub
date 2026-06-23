@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --bg: #030303;
+  --surface: #08111F;
+  --card: rgba(255,255,255,0.04);
+  --emerald: #00FFC6;
+  --cyan: #00D4FF;
+  --gold: #FFD166;
+  --text: #F8FAFC;
+  --muted: #94A3B8;
+  --borders: rgba(255,255,255,0.08);
+}
+
+html,body,#__next{height:100%;}
+body{
+  background: radial-gradient(ellipse at 20% 10%, rgba(0, 212, 255, 0.04), transparent 10%), radial-gradient(ellipse at 80% 90%, rgba(0, 255, 198, 0.03), transparent 8%), var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Glass panel */
+.glass{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid var(--borders);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border-radius: 16px;
+}
+
+/* utility for large hero headline */
+.h-hero{font-family: 'Space Grotesk', sans-serif; font-weight:700; letter-spacing: -0.02em;}
