@@ -20,7 +20,7 @@ from routes import profile, skills, projects, certificates, leaderboard, admin, 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Student Profile Platform API")
+app = FastAPI(title="academicos API")
 
 # Configure CORS
 app.add_middleware(
@@ -52,7 +52,7 @@ async def startup_event():
 @app.get("/")
 async def root():
     return {
-        "message": "Welcome to Student Profile Platform API",
+        "message": "Welcome to academicos API",
         "status": "online",
         "version": "1.0.0"
     }

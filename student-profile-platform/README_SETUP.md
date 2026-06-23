@@ -1,4 +1,4 @@
-# Setup Guide: Student Digital Profile Platform
+# Setup Guide: academicos
 
 This guide will help you set up and run the application using **Supabase** for Backend-as-a-Service and **GitHub** for source control.
 
@@ -36,7 +36,7 @@ Supabase handles your database, authentication, and security policies.
    ```bash
    git init
    git add .
-   git commit -m "Initial commit: Student Profile Platform"
+   git commit -m "Initial commit: academicos"
    git remote add origin https://github.com/your-username/your-repo-name.git
    git push -u origin main
    ```
