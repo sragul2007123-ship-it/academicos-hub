@@ -140,6 +140,17 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
+-- Post Likes table
+CREATE TABLE IF NOT EXISTS post_likes (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(post_id, user_id)
+);
+ALTER TABLE post_likes ENABLE ROW LEVEL SECURITY;
+
+
 -- RLS Policies for users
 DROP POLICY IF EXISTS "Users can read all users" ON users;
 DROP POLICY IF EXISTS "Users can insert own user" ON users;
@@ -245,6 +256,8 @@ CREATE INDEX IF NOT EXISTS idx_friendships_requester ON friendships(requester_id
 CREATE INDEX IF NOT EXISTS idx_friendships_addressee ON friendships(addressee_id);
 CREATE INDEX IF NOT EXISTS idx_leaderboard_rank ON leaderboard(rank);
 CREATE INDEX IF NOT EXISTS idx_leaderboard_user_id ON leaderboard(user_id);
+CREATE INDEX IF NOT EXISTS idx_post_likes_post_id ON post_likes(post_id);
+CREATE INDEX IF NOT EXISTS idx_post_likes_user_id ON post_likes(user_id);
 
 -- RLS Policies for friendships
 DROP POLICY IF EXISTS "Friendships are readable by involved users" ON friendships;
@@ -286,3 +299,12 @@ DROP POLICY IF EXISTS "Users can read own messages" ON messages;
 DROP POLICY IF EXISTS "Users can send messages" ON messages;
 CREATE POLICY "Users can read own messages" ON messages FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
 CREATE POLICY "Users can send messages" ON messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
+
+-- RLS Policies for post_likes
+DROP POLICY IF EXISTS "Likes are publicly readable" ON post_likes;
+DROP POLICY IF EXISTS "Users can insert own likes" ON post_likes;
+DROP POLICY IF EXISTS "Users can delete own likes" ON post_likes;
+CREATE POLICY "Likes are publicly readable" ON post_likes FOR SELECT USING (true);
+CREATE POLICY "Users can insert own likes" ON post_likes FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can delete own likes" ON post_likes FOR DELETE USING (auth.uid() = user_id);
+

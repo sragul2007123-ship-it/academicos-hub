@@ -59,8 +59,8 @@ const features = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
       </svg>
     ),
-    title: 'Direct Messaging & AI',
-    desc: 'Chat directly with peers and get instant AI-generated hireability feedback on your profile.',
+    title: 'Direct Messaging',
+    desc: 'Chat directly with peers, mentors, and recruiters within the platform.',
     color: 'from-indigo-500 to-violet-500',
   },
   {
@@ -225,24 +225,7 @@ export default function LandingPage() {
              </div>
           </div>
 
-          {/* New Active Learning Teaser */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-24 p-1 rounded-3xl bg-gradient-to-r from-primary-500/20 via-accent-500/20 to-primary-500/20 backdrop-blur-xl border border-white/10"
-          >
-            <div className="bg-white/80 dark:bg-black/40 rounded-[22px] p-8 flex flex-col md:flex-row items-center gap-8 text-left">
-              <div className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center text-3xl shadow-xl">🧠</div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold dark:text-white mb-2">New: Mellow Active Learning Hub</h3>
-                <p className="text-gray-600 dark:text-gray-400">Master your course material with Socratic AI debate and high-fidelity study notes. Transform lectures into wisdom.</p>
-              </div>
-              <Link to="/learning" className="px-6 py-3 rounded-xl font-bold text-white bg-black dark:bg-white dark:text-black hover:scale-105 transition-transform whitespace-nowrap">
-                Try Active Learning
-              </Link>
-            </div>
-          </motion.div>
+
 
           {/* Simple Mobile Stats */}
           <div className="mt-16 sm:hidden grid grid-cols-3 gap-4">

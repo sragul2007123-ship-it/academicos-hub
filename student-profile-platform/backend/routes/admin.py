@@ -11,7 +11,11 @@ async def get_all_students():
         res = supabase.table("users").select(
             "*, profiles(*), projects(id), skills(id), certificates(id)"
         ).order("created_at", desc=True).execute()
-        return res.data
+        users = res.data
+        for user in users:
+            profiles_list = user.get("profiles", [])
+            user["profiles"] = profiles_list[0] if isinstance(profiles_list, list) and profiles_list else (profiles_list or {})
+        return users
     except Exception as e:
         print(f"Admin fetch error: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch student data")

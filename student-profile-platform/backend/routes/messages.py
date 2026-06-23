@@ -83,7 +83,7 @@ async def update_presence(user_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/{message_id}")
-async def delete_message(message_id: int):
+async def delete_message(message_id: str):
     try:
         res = supabase.table("messages").delete().eq("id", message_id).execute()
         return {"status": "success", "data": res.data}
@@ -91,7 +91,7 @@ async def delete_message(message_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.patch("/{message_id}/react")
-async def react_to_message(message_id: int, reaction_data: dict):
+async def react_to_message(message_id: str, reaction_data: dict):
     try:
         emoji = reaction_data.get("emoji")
         user_id = reaction_data.get("user_id")

@@ -28,7 +28,7 @@ async def create_post(post: dict):
         raise HTTPException(status_code=500, detail="Failed to create post")
 
 @router.post("/{post_id}/like")
-async def like_post(post_id: int, data: dict):
+async def like_post(post_id: str, data: dict):
     try:
         user_id = data.get("user_id")
         # Check if already liked
@@ -50,7 +50,7 @@ async def like_post(post_id: int, data: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{post_id}/comments")
-async def get_comments(post_id: int):
+async def get_comments(post_id: str):
     try:
         res = supabase.table("post_comments").select(
             "*, users(id, name, username, profile_photo)"
@@ -60,7 +60,7 @@ async def get_comments(post_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/{post_id}/comments")
-async def add_comment(post_id: int, comment: dict):
+async def add_comment(post_id: str, comment: dict):
     try:
         res = supabase.table("post_comments").insert({
             "post_id": post_id,

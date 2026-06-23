@@ -67,6 +67,9 @@ async def get_public_profile(username: str):
             raise HTTPException(status_code=404, detail="User not found")
             
         data = res.data
+        profiles_list = data.get("profiles", [])
+        profile_data = profiles_list[0] if isinstance(profiles_list, list) and profiles_list else (profiles_list or {})
+        
         return {
             "user": {
                 "id": data.get("id"),
@@ -75,7 +78,7 @@ async def get_public_profile(username: str):
                 "profile_photo": data.get("profile_photo"),
                 "email": data.get("email")
             },
-            "profile": data.get("profiles"),
+            "profile": profile_data,
             "skills": data.get("skills", []),
             "projects": data.get("projects", []),
             "certificates": data.get("certificates", [])

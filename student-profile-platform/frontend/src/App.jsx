@@ -11,9 +11,7 @@ import Recruiters from './pages/Recruiters'
 import RecruiterProfile from './pages/RecruiterProfile'
 import AdminPanel from './pages/AdminPanel'
 import Posts from './pages/Posts'
-import RecruiterInsights from './pages/RecruiterInsights'
 import Messages from './pages/Messages'
-import LearningHub from './pages/LearningHub'
 import { AnimatePresence } from 'framer-motion'
 
 function AnimatedRoutes() {
@@ -30,10 +28,8 @@ function AnimatedRoutes() {
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/messages" element={<Messages />} />
-        <Route path="/insights" element={<RecruiterInsights />} />
         <Route path="/recruiter/:username" element={<RecruiterProfile />} />
         <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/learning" element={<LearningHub />} />
       </Routes>
     </AnimatePresence>
   )
