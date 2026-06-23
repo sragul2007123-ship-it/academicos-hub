@@ -4,6 +4,7 @@ import { api } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../services/supabaseClient'
+import LearningHub from './LearningHub'
 
 export default function StudentProfile() {
   const { username } = useParams()
@@ -228,59 +229,70 @@ export default function StudentProfile() {
         </section>
 
         {/* Tabs */}
-        <div className="border-t border-gray-200 dark:border-surface-800 flex justify-center gap-14 -mt-px">
+        <div className="border-t border-gray-200 dark:border-surface-800 flex justify-center gap-6 sm:gap-14 -mt-px flex-wrap">
           <button 
             onClick={() => setActiveTab('posts')}
-            className={`flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t transition-all ${activeTab === 'posts' ? 'border-black dark:border-white text-black dark:text-white' : 'border-transparent text-gray-400'}`}
+            className={`flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t transition-all ${activeTab === 'posts' ? 'border-black dark:border-white text-black dark:text-white' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
           >
             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
             POSTS
           </button>
           <button 
             onClick={() => setActiveTab('reels')}
-            className={`flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t transition-all ${activeTab === 'reels' ? 'border-black dark:border-white text-black dark:text-white' : 'border-transparent text-gray-400'}`}
+            className={`flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t transition-all ${activeTab === 'reels' ? 'border-black dark:border-white text-black dark:text-white' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             CERTIFICATES
           </button>
           <button 
-            className="flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t border-transparent text-gray-400 opacity-50"
+            onClick={() => setActiveTab('learning')}
+            className={`flex items-center gap-1.5 h-[52px] text-[12px] font-bold tracking-widest uppercase border-t transition-all ${activeTab === 'learning' ? 'border-black dark:border-white text-black dark:text-white' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
           >
-             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-             TAGGED
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            LEARNING HUB
           </button>
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-3 gap-1 sm:gap-7 mt-px">
-          {(activeTab === 'posts' ? projects : certificates).map((item, index) => (
-            <motion.div 
-              key={index} 
-              initial={{opacity: 0, scale: 0.9}}
-              animate={{opacity: 1, scale: 1}}
-              transition={{delay: index * 0.05}}
-              className="relative aspect-square bg-gray-200 dark:bg-surface-800 overflow-hidden group cursor-pointer"
-            >
-              {item.image_url ? (
-                <img src={item.image_url} className="w-full h-full object-cover group-hover:opacity-75 transition-opacity" alt="post" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-600 font-bold p-4 text-center text-xs">
-                  {item.title || item.certificate_name}
-                </div>
-              )}
-              {/* Hover effect */}
-              <div className="absolute inset-0 bg-black/30 items-center justify-center gap-6 text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex">
-                <div className="flex items-center gap-2">
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
-                  <span>{Math.floor(Math.random() * 50) + 10}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" /></svg>
-                  <span>{Math.floor(Math.random() * 10) + 2}</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div className="mt-8">
+          {activeTab === 'learning' ? (
+            <div className="py-4">
+              <LearningHub embedded={true} />
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-1 sm:gap-7 mt-px">
+              {(activeTab === 'posts' ? projects : certificates).map((item, index) => (
+                <motion.div 
+                  key={index} 
+                  initial={{opacity: 0, scale: 0.9}}
+                  animate={{opacity: 1, scale: 1}}
+                  transition={{delay: index * 0.05}}
+                  className="relative aspect-square bg-gray-200 dark:bg-surface-800 overflow-hidden group cursor-pointer"
+                >
+                  {item.image_url ? (
+                    <img src={item.image_url} className="w-full h-full object-cover group-hover:opacity-75 transition-opacity" alt="post" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-600 font-bold p-4 text-center text-xs">
+                      {item.title || item.certificate_name}
+                    </div>
+                  )}
+                  {/* Hover effect */}
+                  <div className="absolute inset-0 bg-black/30 items-center justify-center gap-6 text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex">
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+                      <span>{Math.floor(Math.random() * 50) + 10}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" /></svg>
+                      <span>{Math.floor(Math.random() * 10) + 2}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Empty state */}
