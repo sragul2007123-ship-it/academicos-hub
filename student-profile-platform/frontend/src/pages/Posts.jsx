@@ -117,7 +117,7 @@ export default function Posts() {
     if (!requireAuth()) return
     if (!window.confirm('Delete this post?')) return
     try {
-      await api.deletePost(postId)
+      await api.deletePost(postId, user.id)
       setPosts(prev => prev.filter(p => p.id !== postId))
     } catch (err) {
       console.error('Delete failed:', err)

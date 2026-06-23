@@ -67,9 +67,21 @@ export default function StudentProfile() {
       // Increment views
       api.incrementViews(username).catch(() => {})
     } catch (err) {
-      setError('Profile not found')
-    } finally {
-      setLoading(false)
+      console.error(err)
+      setError(err.message)
+    }
+    setLoading(false)
+  }
+
+  const handleDeletePost = async (postId) => {
+    if (!requireAuth()) return
+    if (!window.confirm('Delete this post?')) return
+    try {
+      await api.deletePost(postId, user.id)
+      setUserPosts(prev => prev.filter(p => p.id !== postId))
+    } catch (err) {
+      console.error('Delete failed:', err)
+      alert('Failed to delete post')
     }
   }
 
@@ -316,7 +328,7 @@ export default function StudentProfile() {
               ) : activeTab === 'posts' ? (
                 <div className="space-y-6 max-w-3xl mx-auto">
                   {userPosts.map((post, index) => (
-                    <PostItem key={post.id || index} initialPost={post} />
+                    <PostItem key={post.id || index} initialPost={post} onDelete={handleDeletePost} />
                   ))}
                 </div>
               ) : (
