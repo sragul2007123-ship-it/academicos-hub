@@ -75,6 +75,7 @@ function gcn(t) {
 // ── API HANDLERS ───────────────────────────────────────────────────────────
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 const PROXY_URL = API_URL.endsWith('/api') ? `${API_URL}/learning/chat` : `${API_URL}/api/learning/chat`;
+const UPLOAD_URL = API_URL.endsWith('/api') ? `${API_URL}/learning/upload` : `${API_URL}/api/learning/upload`;
 
 async function ai(sys, user) {
   const r = await fetch(PROXY_URL, {
@@ -283,6 +284,7 @@ function InputScreen({ onNext }) {
   const [text, setText] = useState("");
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
+  const [extracting, setExtracting] = useState(false);
   const [loadStep, setLoadStep] = useState(0);
   const fileRef = useRef(null);
 
@@ -314,11 +316,31 @@ function InputScreen({ onNext }) {
     }
   };
 
-  const handleFile = (file) => {
+  const handleFile = async (file) => {
     if (!file) return;
-    const r = new FileReader();
-    r.onload = (ev) => setText(ev.target.result);
-    r.readAsText(file);
+    setExtracting(true);
+    setErr("");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      
+      const r = await fetch(UPLOAD_URL, {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!r.ok) {
+        const errData = await r.json().catch(() => ({}));
+        throw new Error(errData.detail || "Failed to extract text from file");
+      }
+      
+      const d = await r.json();
+      setText(d.text);
+    } catch (e) {
+      setErr(e.message || "Couldn't read file. Try pasting the text instead.");
+    } finally {
+      setExtracting(false);
+    }
   };
 
   if (loading) {
@@ -390,13 +412,15 @@ function InputScreen({ onNext }) {
           <svg className="w-6 h-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
-          <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">Click to browse or drag file (.txt)</span>
+          <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+            {extracting ? "Extracting text..." : "Click to browse or drag file (.pdf, .docx, .txt)"}
+          </span>
         </button>
 
         <input
           ref={fileRef}
           type="file"
-          accept=".txt"
+          accept=".txt,.pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           style={{ display: "none" }}
           onChange={(e) => handleFile(e.target.files[0])}
         />

@@ -64,3 +64,38 @@ async def chat_proxy(request: Request):
     except Exception as e:
         logger.error(f"Server error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+from fastapi import UploadFile, File
+import io
+
+@router.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        content = await file.read()
+        filename = file.filename.lower()
+        extracted_text = ""
+
+        if filename.endswith(".pdf"):
+            import PyPDF2
+            pdf_reader = PyPDF2.PdfReader(io.BytesIO(content))
+            for page in pdf_reader.pages:
+                extracted_text += page.extract_text() + "\n"
+        elif filename.endswith(".docx"):
+            import docx
+            doc = docx.Document(io.BytesIO(content))
+            for para in doc.paragraphs:
+                extracted_text += para.text + "\n"
+        elif filename.endswith(".txt"):
+            extracted_text = content.decode("utf-8", errors="ignore")
+        else:
+            extracted_text = content.decode("utf-8", errors="ignore")
+
+        safe_limit = 60000
+        if len(extracted_text) > safe_limit:
+            extracted_text = extracted_text[:safe_limit] + "\n\n[Note: Document was truncated because it exceeded the length limit.]"
+
+        return {"text": extracted_text}
+    except Exception as e:
+        logger.error(f"Error parsing file: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to parse file. Please ensure it's a valid PDF, DOCX, or TXT file.")
+
