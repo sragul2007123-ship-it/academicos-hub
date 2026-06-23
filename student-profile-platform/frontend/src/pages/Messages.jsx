@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../services/supabaseClient'
@@ -8,6 +8,18 @@ import { supabase } from '../services/supabaseClient'
 export default function Messages() {
   const { user } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
+
+  const requireAuth = (e) => {
+    if (!user) {
+      if (e && e.preventDefault) e.preventDefault();
+      alert('Please create an account or sign in to use messaging.');
+      navigate('/register');
+      return false;
+    }
+    return true;
+  }
+
   const [conversations, setConversations] = useState([])
   const [selectedFriend, setSelectedFriend] = useState(null)
   const [messages, setMessages] = useState([])
@@ -35,6 +47,13 @@ export default function Messages() {
       }, 120000)
       
       return () => clearInterval(interval)
+    } else {
+      // Mock data for Explore Mode
+      setConversations([
+        { id: 'mock1', name: 'Alex Johnson', last_message: 'Sure, let\'s collaborate!', last_message_time: new Date().toISOString(), unread_count: 2 },
+        { id: 'mock2', name: 'Mellow Recruiter', last_message: 'We loved your profile. Are you available for a quick chat?', last_message_time: new Date(Date.now() - 3600000).toISOString(), unread_count: 1 }
+      ])
+      setLoadingConv(false)
     }
   }, [user])
 
@@ -75,6 +94,7 @@ export default function Messages() {
   const [activeMenu, setActiveMenu] = useState(null) // ID of message with open menu
 
   const handleReact = async (messageId, emoji) => {
+    if (!requireAuth()) return;
     try {
       const res = await api.reactToMessage(messageId, emoji, user.id)
       if (res.status === 'success') {
@@ -88,6 +108,7 @@ export default function Messages() {
   }
 
   const handleUnsend = async (messageId) => {
+    if (!requireAuth()) return;
     if (!window.confirm('Unsend this message?')) return
     try {
       await api.deleteMessage(messageId)
@@ -159,6 +180,7 @@ export default function Messages() {
   }
 
   const handleFileSelect = async (e) => {
+    if (!requireAuth(e)) return;
     const file = e.target.files[0]
     if (!file || !selectedFriend) return
 
@@ -189,6 +211,7 @@ export default function Messages() {
 
   const handleSendMessage = async (e) => {
     e.preventDefault()
+    if (!requireAuth(e)) return;
     if (!newMessage.trim() || !selectedFriend || !user) return
 
     const msgData = {
@@ -261,7 +284,7 @@ export default function Messages() {
                   .map((friend) => (
                   <button
                     key={friend.id}
-                    onClick={() => setSelectedFriend(friend)}
+                    onClick={() => requireAuth() ? setSelectedFriend(friend) : null}
                     className={`w-full flex items-center gap-3 p-3 rounded-2xl transition-all ${
                       selectedFriend?.id === friend.id 
                         ? 'bg-[var(--emerald)]/20 border border-[var(--emerald)]/50 shadow-[0_0_15px_rgba(0,255,198,0.2)]' 

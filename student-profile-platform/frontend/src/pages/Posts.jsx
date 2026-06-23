@@ -82,6 +82,7 @@ export default function Posts() {
   }
 
   const handleFileSelect = (e) => {
+    if (!requireAuth()) return
     const file = e.target.files[0]
     if (file) setSelectedFile(file)
   }
@@ -106,8 +107,8 @@ export default function Posts() {
 
   const handleCreatePost = async (e) => {
     e.preventDefault()
+    if (!requireAuth()) return
     if (!newPost.trim() && !selectedFile) return
-    if (!user) return
 
     setUploading(true)
     try {
@@ -261,7 +262,7 @@ export default function Posts() {
         </motion.div>
 
         {/* Create Post Section */}
-        {user && (
+        {true && (
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.1 }}
             className="glass-card mb-8 p-6 rounded-3xl shadow-xl border-t-4 border-t-[var(--emerald)] overflow-hidden relative"
@@ -269,10 +270,10 @@ export default function Posts() {
             <form onSubmit={handleCreatePost} className="relative z-10">
               <div className="flex gap-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--emerald)] to-[var(--cyan)] flex items-center justify-center text-[var(--background)] text-lg font-bold shrink-0 shadow-[0_0_15px_rgba(0,255,198,0.3)]">
-                  {user.user_metadata?.avatar_url ? (
+                  {user?.user_metadata?.avatar_url ? (
                     <img src={user.user_metadata.avatar_url} className="w-full h-full rounded-full object-cover" alt="you" />
                   ) : (
-                    user.email?.[0].toUpperCase()
+                    user?.email?.[0].toUpperCase() || 'A'
                   )}
                 </div>
                 <div className="flex-1">
@@ -298,7 +299,7 @@ export default function Posts() {
               <div className="flex justify-between items-center mt-4 pt-4 border-t border-[var(--border)]">
                 <button 
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={(e) => { if (requireAuth(e)) fileInputRef.current?.click() }}
                   className="flex items-center gap-2 text-[var(--emerald)] font-bold hover:bg-[var(--glass)] px-4 py-2 rounded-xl transition-all"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -322,7 +323,7 @@ export default function Posts() {
         {/* Filters */}
         <div className="flex justify-center gap-4 mb-8">
           <button onClick={() => setFilterMode('global')} className={`px-8 py-3 rounded-full font-bold transition-all ${filterMode === 'global' ? 'bg-[var(--text)] text-[var(--background)] shadow-xl' : 'glass-card text-[var(--muted)] hover:bg-[var(--glass)]'}`}>🌍 Global Feed</button>
-          <button onClick={() => { if(!user) return alert("Please login"); setFilterMode('friends') }} className={`px-8 py-3 rounded-full font-bold transition-all ${filterMode === 'friends' ? 'bg-[var(--emerald)] text-[var(--background)] shadow-xl' : 'glass-card text-[var(--muted)] hover:bg-[var(--glass)]'}`}>🤝 Friends</button>
+          <button onClick={() => { if(requireAuth()) setFilterMode('friends') }} className={`px-8 py-3 rounded-full font-bold transition-all ${filterMode === 'friends' ? 'bg-[var(--emerald)] text-[var(--background)] shadow-xl' : 'glass-card text-[var(--muted)] hover:bg-[var(--glass)]'}`}>🤝 Friends</button>
         </div>
 
         {/* Posts Feed */}

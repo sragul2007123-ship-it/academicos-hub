@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Leaderboard() {
   const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const requireAuth = () => {
+    if (!user) {
+      alert('Please create an account or sign in to use this feature.');
+      navigate('/register');
+      return false;
+    }
+    return true;
+  }
   const [globalStudents, setGlobalStudents] = useState([])
   const [friendStudents, setFriendStudents] = useState([])
   const [friendsActivity, setFriendsActivity] = useState([])
@@ -131,9 +141,9 @@ export default function Leaderboard() {
         {/* Tabs Control */}
         <div className="flex justify-center mb-10">
           <div className="bg-[var(--surface-2)]/50 backdrop-blur-md p-1.5 rounded-2xl flex gap-2 border border-white/20 dark:border-surface-700 shadow-xl">
-            {user && (
+            {true && (
               <button
-                onClick={() => setActiveTab('friends')}
+                onClick={() => { if(requireAuth()) setActiveTab('friends') }}
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold transition-all ${
                   activeTab === 'friends'
                     ? 'bg-[var(--emerald)] text-[var(--background)] shadow-lg scale-105'

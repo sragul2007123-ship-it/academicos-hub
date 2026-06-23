@@ -11,6 +11,16 @@ export default function StudentProfile() {
   const { username } = useParams()
   const { user } = useAuth()
   const navigate = useNavigate()
+
+  const requireAuth = () => {
+    if (!user) {
+      alert('Please create an account or sign in to connect with others.');
+      navigate('/register');
+      return false;
+    }
+    return true;
+  }
+
   const [profileData, setProfileData] = useState(null)
   const [skills, setSkills] = useState([])
   const [projects, setProjects] = useState([])
@@ -74,7 +84,8 @@ export default function StudentProfile() {
   }
 
   const handleFriendAction = async () => {
-    if (!user) return navigate('/login')
+    if (!requireAuth()) return;
+    if (!user || friendLoading) return
     setFriendLoading(true)
     try {
       if (friendStatus === 'pending') {
@@ -170,7 +181,7 @@ export default function StudentProfile() {
                       {friendStatus === 'accepted' ? 'Following' : friendLoading ? '...' : friendStatus === 'sent' ? 'Requested' : 'Follow'}
                     </button>
                     <button 
-                      onClick={() => navigate(`/messages?user=${profileData.id}`)}
+                      onClick={() => requireAuth() ? navigate(`/messages?user=${profileData.id}`) : null}
                       className="px-6 py-3 bg-[var(--surface-2)] border border-[var(--border)] text-white text-sm font-bold rounded-xl hover:bg-[var(--glass)] transition-all"
                     >
                       Message

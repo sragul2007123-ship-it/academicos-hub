@@ -23,6 +23,10 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const fileInputRef = useRef(null)
   const [activeTab, setActiveTab] = useState('profile')
+  const [insights, setInsights] = useState([
+    { text: 'Loading AI insights...', color: 'emerald', highlight: 'AI insights' },
+    { text: 'Analyzing your profile...', color: 'gold', highlight: 'profile' }
+  ])
   const [profile, setProfile] = useState(defaultProfile)
   const [skills, setSkills] = useState([])
   const [projects, setProjects] = useState([])
@@ -99,6 +103,41 @@ export default function Dashboard() {
       setSentRequests([]);
     }
   }, [user, loading])
+
+  useEffect(() => {
+    const generateInsights = () => {
+      const newInsights = [];
+      if (!user) {
+         const generalNews = [
+           { text: 'AI Engineering roles are up 40% this month. Start building a portfolio to stand out.', color: 'emerald', highlight: 'AI Engineering' },
+           { text: 'Top recruiters are actively looking for Next.js and Tailwind experience.', color: 'cyan', highlight: 'Next.js' },
+           { text: 'Students with verified certifications are 3x more likely to be contacted by recruiters.', color: 'gold', highlight: 'certifications' },
+           { text: 'Showcasing open-source contributions can boost your Placement Readiness to High.', color: 'emerald', highlight: 'open-source' },
+           { text: 'Tech companies value problem-solving skills; make sure your projects highlight the problems you solved.', color: 'cyan', highlight: 'problem-solving' }
+         ];
+         const shuffled = generalNews.sort(() => 0.5 - Math.random());
+         newInsights.push(...shuffled.slice(0, 2));
+      } else {
+         if (skills.length > 0) {
+            const topSkill = skills[0].skill_name;
+            newInsights.push({ text: `Your ${topSkill} skills are in high demand right now. Consider adding a ${topSkill} project to boost visibility.`, color: 'emerald', highlight: topSkill });
+         } else {
+            newInsights.push({ text: 'Add at least 3 technical skills to help Mellow AI recommend the best roles for you.', color: 'cyan', highlight: '3 technical skills' });
+         }
+         
+         if (projects.length === 0) {
+            newInsights.push({ text: 'Building your first project? Start small with a React or Python app to get on recruiters radars.', color: 'gold', highlight: 'first project' });
+         } else {
+            newInsights.push({ text: `You have ${projects.length} solid projects! Consider writing a technical blog post about your favorite one.`, color: 'emerald', highlight: 'technical blog post' });
+         }
+      }
+      setInsights(newInsights);
+    };
+
+    generateInsights();
+    const interval = setInterval(generateInsights, 10000);
+    return () => clearInterval(interval);
+  }, [user, skills, projects]);
 
   const showMessage = (type, text) => {
     setMessage({ type, text })
@@ -643,21 +682,21 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="p-4 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--emerald)]"></div>
-                    <p className="text-sm text-gray-300 leading-relaxed font-medium">
-                      "Adding <strong className="text-white">2 React projects</strong> to your portfolio could increase your recruiter visibility score by 12%."
-                    </p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--gold)]"></div>
-                    <p className="text-sm text-gray-300 leading-relaxed font-medium">
-                      "Your Machine Learning skill level is high, consider adding a <strong className="text-white">certification</strong> to validate it."
-                    </p>
-                  </div>
+                  {insights.map((insight, idx) => (
+                    <div key={idx} className="p-4 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] relative overflow-hidden transition-all duration-500">
+                      <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[var(--${insight.color})]`}></div>
+                      <p className="text-sm text-gray-300 leading-relaxed font-medium">
+                        {insight.text.split(insight.highlight).map((part, i, arr) => 
+                          i === arr.length - 1 ? part : <span key={i}>{part}<strong className="text-white">{insight.highlight}</strong></span>
+                        )}
+                      </p>
+                    </div>
+                  ))}
                 </div>
                 
-                <button className="w-full mt-6 py-3 rounded-xl font-bold text-sm text-white bg-white/5 hover:bg-white/10 transition-colors">
+                <button 
+                  onClick={(e) => requireAuth(e)}
+                  className="w-full mt-6 py-3 rounded-xl font-bold text-sm text-white bg-white/5 hover:bg-white/10 transition-colors">
                   View Full Analysis
                 </button>
               </div>
