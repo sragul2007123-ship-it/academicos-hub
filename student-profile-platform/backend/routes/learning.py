@@ -75,7 +75,7 @@ async def upload_file(file: UploadFile = File(...)):
         filename = file.filename.lower()
         extracted_text = ""
 
-        safe_limit = 60000
+        safe_limit = 20000
 
         if filename.endswith(".pdf"):
             import PyPDF2
