@@ -8,6 +8,15 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "ci:build": "next build",
+    "ci:start": "next start -p 3000",
+    "ci:lighthouse": "lighthouse http://localhost:3000 --output=json --output-path=./lhreport.json --only-categories=performance,accessibility,best-practices,seo --chrome-flags=\"--no-sandbox --headless\""
+  },
   "dependencies": {
     "next": "^15.0.0",
     "react": "^18.2.0",
@@ -26,6 +35,8 @@
     "postcss": "^8.4.32",
     "autoprefixer": "^10.4.16",
     "@types/react": "^18.2.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "lighthouse": "^11.8.0",
+    "wait-on": "^7.0.1"
   }
 }
