@@ -2,11 +2,22 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { api } from '../services/api'
 import { useAuth } from '../context/AuthContext'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
 
 export default function Posts() {
   const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const requireAuth = () => {
+    if (!user) {
+      alert('Please create an account or sign in to use this feature.');
+      navigate('/register');
+      return false;
+    }
+    return true;
+  }
+
   const [posts, setPosts] = useState([])
   const [filteredPosts, setFilteredPosts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -161,7 +172,7 @@ export default function Posts() {
   }
 
   const handleLike = async (postId) => {
-    if (!user) return
+    if (!requireAuth()) return
     try {
       const result = await api.likePost(postId, user.id)
       setPosts(prev => prev.map(p => 
@@ -187,7 +198,8 @@ export default function Posts() {
   const handleAddComment = async (e, postId) => {
     e.preventDefault()
     const content = newComment[postId]
-    if (!content?.trim() || !user) return
+    if (!requireAuth()) return;
+    if (!content?.trim()) return;
 
     try {
       const created = await api.addComment(postId, {

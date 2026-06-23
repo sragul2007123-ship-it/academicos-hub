@@ -59,14 +59,46 @@ export default function Dashboard() {
       window.location.hash.includes('error=')
     )
     
+    // PREVIEW MODE: We no longer redirect to login on load. 
+    // Unauthenticated users can view the dashboard with mock data.
     if (!loading && !user && !hasHashSession) {
-      navigate('/login')
+      // navigate('/login')
     }
   }, [user, loading, navigate])
 
   useEffect(() => {
-    if (user) loadData()
-  }, [user])
+    if (user) {
+      loadData()
+    } else if (!loading && !user) {
+      // PREVIEW MODE MOCK DATA
+      setProfile({
+        name: 'Alex Johnson',
+        username: 'alexj',
+        role: 'Computer Science Student',
+        about: 'Passionate about artificial intelligence and building scalable web applications. Always learning, always building.',
+        profile_photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=00D4FF',
+        github: 'https://github.com/alexj',
+        linkedin: 'https://linkedin.com/in/alexj',
+        college: 'University of Technology',
+        degree: 'B.S. Computer Science',
+        year: '2025'
+      });
+      setSkills([
+        { id: 1, skill_name: 'React', category: 'Technical', skill_level: 90 },
+        { id: 2, skill_name: 'Python', category: 'Technical', skill_level: 85 },
+        { id: 3, skill_name: 'Machine Learning', category: 'Technical', skill_level: 70 },
+      ]);
+      setProjects([
+        { id: 1, title: 'AI Study Assistant', description: 'Built a study assistant using OpenAI API.', github_link: '#', demo_link: '#', image_url: '' },
+      ]);
+      setCertificates([
+        { id: 1, title: 'AWS Cloud Practitioner', certificate_url: '#' },
+      ]);
+      setFriends([]);
+      setPendingRequests([]);
+      setSentRequests([]);
+    }
+  }, [user, loading])
 
   const showMessage = (type, text) => {
     setMessage({ type, text })
@@ -155,6 +187,18 @@ export default function Dashboard() {
   }
 
 
+
+  const requireAuth = (e) => {
+    if (!user) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+      showMessage('error', 'Please create an account to use this feature.');
+      setTimeout(() => navigate('/register'), 2000);
+      return false;
+    }
+    return true;
+  }
+
   const uploadFile = async (file, bucket, folder = '') => {
     const fileExt = file.name.split('.').pop()
     const fileName = `${user.id}-${Math.random().toString(36).substring(2)}.${fileExt}`
@@ -174,6 +218,7 @@ export default function Dashboard() {
   }
 
   const handlePhotoUpload = async (e) => {
+    if (!requireAuth(e)) return;
     const file = e.target.files[0]
     if (!file) return
 
@@ -196,6 +241,7 @@ export default function Dashboard() {
   }
 
   const handleProjectImageUpload = async (e) => {
+    if (!requireAuth(e)) return;
     const file = e.target.files[0]
     if (!file) return
     setUploading(true)
@@ -211,6 +257,7 @@ export default function Dashboard() {
   }
 
   const handleCertUpload = async (e) => {
+    if (!requireAuth(e)) return;
     const file = e.target.files[0]
     if (!file) return
     setUploading(true)
@@ -226,6 +273,7 @@ export default function Dashboard() {
   }
 
   const saveProfile = async () => {
+    if (!requireAuth()) return;
     // Basic validation
     if (!profile.username || profile.username.trim() === '') {
       showMessage('error', 'Username is required for your public profile link.')
@@ -271,6 +319,7 @@ export default function Dashboard() {
   }
 
   const addSkill = async () => {
+    if (!requireAuth()) return;
     if (!newSkill.skill_name) return
     try {
       const data = await api.addSkill(user.id, newSkill)
@@ -283,12 +332,14 @@ export default function Dashboard() {
   }
 
   const deleteSkill = async (id) => {
+    if (!requireAuth()) return;
     await api.deleteSkill(id)
     setSkills(prev => prev.filter(s => s.id !== id))
     showMessage('success', 'Skill deleted')
   }
 
   const addProject = async () => {
+    if (!requireAuth()) return;
     if (!newProject.title) return
     try {
       const data = await api.addProject(user.id, newProject)
@@ -301,12 +352,14 @@ export default function Dashboard() {
   }
 
   const deleteProject = async (id) => {
+    if (!requireAuth()) return;
     await api.deleteProject(id)
     setProjects(prev => prev.filter(p => p.id !== id))
     showMessage('success', 'Project deleted')
   }
 
   const addCertificate = async () => {
+    if (!requireAuth()) return;
     if (!newCert.title) return
     try {
       const data = await api.addCertificate(user.id, newCert)
@@ -319,6 +372,7 @@ export default function Dashboard() {
   }
 
   const deleteCertificate = async (id) => {
+    if (!requireAuth()) return;
     await api.deleteCertificate(id)
     setCertificates(prev => prev.filter(c => c.id !== id))
     showMessage('success', 'Certificate deleted')
@@ -336,6 +390,7 @@ export default function Dashboard() {
   }, [searchQuery])
 
   const performSearch = async (q) => {
+    if (!requireAuth()) return;
     try {
       const results = await api.searchUsers(user.id, q)
       setSearchResults(results)
@@ -349,6 +404,7 @@ export default function Dashboard() {
   }
 
   const sendFriendRequest = async (addresseeId) => {
+    if (!requireAuth()) return;
     try {
       await api.sendFriendRequest(user.id, addresseeId)
       const sent = await api.getSentRequests(user.id)
@@ -361,6 +417,7 @@ export default function Dashboard() {
   }
 
   const acceptFriendRequest = async (friendshipId) => {
+    if (!requireAuth()) return;
     try {
       await api.acceptFriendRequest(friendshipId)
       // Refresh friends and pending
@@ -377,6 +434,7 @@ export default function Dashboard() {
   }
 
   const rejectFriendRequest = async (friendshipId) => {
+    if (!requireAuth()) return;
     try {
       await api.rejectFriendRequest(friendshipId)
       setPendingRequests(prev => prev.filter(r => r.friendship_id !== friendshipId))
@@ -387,6 +445,7 @@ export default function Dashboard() {
   }
 
   const unfriend = async (friendshipId) => {
+    if (!requireAuth()) return;
     if (!confirm('Are you sure you want to remove this friend?')) return
     try {
       await api.removeFriend(friendshipId)
@@ -463,7 +522,7 @@ export default function Dashboard() {
                 <p className="text-gray-400 font-medium mt-1">Welcome back, {profile.name?.split(' ')[0] || 'Student'}. Your identity score is looking strong.</p>
               </div>
               <div className="flex items-center gap-4">
-                <button onClick={() => setIsEditing(true)} className="px-6 py-2.5 rounded-xl font-bold bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--emerald)] transition-all flex items-center gap-2">
+                <button onClick={(e) => { if (requireAuth(e)) setIsEditing(true); }} className="px-6 py-2.5 rounded-xl font-bold bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--emerald)] transition-all flex items-center gap-2">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   Settings
                 </button>
@@ -1265,7 +1324,7 @@ export default function Dashboard() {
                         className="input-field pl-10 text-sm"
                         placeholder="Search students..."
                         value={searchQuery}
-                        onChange={handleSearch}
+                        onChange={(e) => { if (requireAuth(e)) handleSearch(e); }}
                       />
                       <svg className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

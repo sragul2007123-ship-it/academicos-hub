@@ -95,7 +95,7 @@ export default function LandingPage() {
                 <MagneticButton to="/register" variant="primary">
                   Start Building
                 </MagneticButton>
-                <MagneticButton to="/leaderboard" variant="secondary">
+                <MagneticButton to="/dashboard" variant="secondary">
                   Explore Platform
                 </MagneticButton>
               </>

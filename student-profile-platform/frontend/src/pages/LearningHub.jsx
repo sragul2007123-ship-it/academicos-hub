@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 // ── CONSTANTS & MOCK DATA ──────────────────────────────────────────────────
 const SAMPLE = `Today we're covering Newton's three laws of motion.
@@ -280,7 +282,7 @@ function ABar({ pct, from, to, delay = 0 }) {
 }
 
 // ── SCREEN VIEW COMPONENTS ──────────────────────────────────────────────────
-function InputScreen({ onNext }) {
+function InputScreen({ onNext, requireAuth }) {
   const [text, setText] = useState("");
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
@@ -302,8 +304,9 @@ function InputScreen({ onNext }) {
     return () => clearInterval(t);
   }, [loading]);
 
-  const go = async () => {
-    if (!canGo) return;
+  const generate = async () => {
+    if (!requireAuth()) return;
+    if (!text.trim()) return;
     setErr("");
     setLoading(true);
     setLoadStep(0);
@@ -316,7 +319,9 @@ function InputScreen({ onNext }) {
     }
   };
 
-  const handleFile = async (file) => {
+  const handleUpload = async (e) => {
+    if (!requireAuth()) return;
+    const file = e.target.files[0];
     if (!file) return;
     setExtracting(true);
     setErr("");
@@ -422,7 +427,7 @@ function InputScreen({ onNext }) {
           type="file"
           accept=".txt,.pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           style={{ display: "none" }}
-          onChange={(e) => handleFile(e.target.files[0])}
+          onChange={handleUpload}
         />
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-2">
@@ -431,7 +436,7 @@ function InputScreen({ onNext }) {
             {wc < 10 ? "Requires at least a few sentences" : "Lecture loaded and ready!"}
           </div>
           <button
-            onClick={go}
+            onClick={generate}
             disabled={!canGo}
             className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--cyan)] hover:opacity-90 text-[var(--background)] font-bold text-sm shadow-lg disabled:opacity-50 transition-colors cursor-pointer"
           >
@@ -1031,6 +1036,18 @@ function ScoreScreen({ scores, notes, onDebateAgain }) {
 
 // ── MAIN HUB CONTAINER ──────────────────────────────────────────────────────
 export default function LearningHub() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const requireAuth = () => {
+    if (!user) {
+      alert("Please create an account or sign in to use Mellow AI.");
+      navigate('/register');
+      return false;
+    }
+    return true;
+  }
+
   const [view,   setView]   = useState("input");
   const [notes,  setNotes]  = useState(null);
   const [scores, setScores] = useState(null);
@@ -1079,7 +1096,7 @@ export default function LearningHub() {
       {/* Screen container */}
       <div className={`max-w-4xl mx-auto px-6 py-8 ${isDebate ? "h-[calc(100vh-140px)] flex flex-col overflow-hidden" : ""}`}>
         {view === "input" && (
-          <InputScreen key={key} onNext={(n) => go("notes", { notes: n })} />
+          <InputScreen key={key} onNext={(n) => go("notes", { notes: n })} requireAuth={requireAuth} />
         )}
         {view === "notes" && notes && (
           <NotesScreen
