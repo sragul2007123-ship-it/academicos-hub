@@ -87,8 +87,6 @@ export const api = {
   getComments: (postId) => request(`/posts/${postId}/comments`),
   addComment: (postId, data) => request(`/posts/${postId}/comments`, { method: 'POST', body: data }),
 
-  // Downloader
-  processDownload: (url, userId) => request('/download/', { method: 'POST', body: { url, userId } }),
 
 
   // Messages

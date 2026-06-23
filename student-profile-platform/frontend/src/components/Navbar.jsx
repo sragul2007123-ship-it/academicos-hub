@@ -83,7 +83,6 @@ export default function Navbar() {
                 <Link to="/posts" className="btn-ghost">Feed</Link>
                 <Link to="/messages" className="btn-ghost">Messages</Link>
                 <Link to="/learning" className="btn-ghost text-primary-500 font-bold">Active Learning</Link>
-                <Link to="/downloader" className="btn-ghost text-accent-500 font-bold">Media Downloader</Link>
                 <Link to="/dashboard" className="btn-ghost">Dashboard</Link>
               </>
             )}
@@ -177,7 +176,6 @@ export default function Navbar() {
                     <Link to="/posts" className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-700 rounded-xl" onClick={() => setMobileOpen(false)}>Feed</Link>
                     <Link to="/messages" className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-700 rounded-xl" onClick={() => setMobileOpen(false)}>Messages</Link>
                     <Link to="/learning" className="px-4 py-3 text-sm font-bold text-primary-500 hover:bg-primary-50/50 dark:hover:bg-primary-900/10 rounded-xl" onClick={() => setMobileOpen(false)}>Active Learning</Link>
-                    <Link to="/downloader" className="px-4 py-3 text-sm font-bold text-accent-500 hover:bg-accent-50/50 dark:hover:bg-accent-900/10 rounded-xl" onClick={() => setMobileOpen(false)}>Media Downloader</Link>
                     <Link to="/dashboard" className="px-4 py-3 text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-700 rounded-xl" onClick={() => setMobileOpen(false)}>Dashboard</Link>
                   </>
                 )}
