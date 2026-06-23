@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../services/supabaseClient'
 import LearningHub from './LearningHub'
+import SkillConstellation from '../components/SkillConstellation'
 
 export default function StudentProfile() {
   const { username } = useParams()
@@ -114,11 +115,11 @@ export default function StudentProfile() {
   )
 
   return (
-    <div className="min-h-screen pt-20 pb-12 bg-[#050816] transition-colors duration-300 relative overflow-hidden">
+    <div className="min-h-screen pt-20 pb-12 transition-colors duration-300 relative overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary-600/10 rounded-full blur-[120px] mix-blend-screen animate-float"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-accent-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-delayed"></div>
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[var(--emerald)]/10 rounded-full blur-[120px] mix-blend-screen animate-float"></div>
+        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[var(--cyan)]/10 rounded-full blur-[150px] mix-blend-screen animate-float-delayed"></div>
       </div>
 
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 relative z-10">
@@ -127,12 +128,12 @@ export default function StudentProfile() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#0f111a]/80 backdrop-blur-2xl rounded-[2rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden mb-8"
+          className="bg-[var(--glass)] backdrop-blur-2xl rounded-[2rem] border border-[var(--border)] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden mb-8"
         >
           {/* Cover Image */}
-          <div className="h-56 w-full bg-gradient-to-br from-primary-900/40 via-accent-900/20 to-black relative overflow-hidden">
+          <div className="h-56 w-full bg-gradient-to-br from-[var(--emerald)]/20 via-[var(--cyan)]/10 to-[var(--background)] relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#0f111a]/80 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[var(--background)] to-transparent"></div>
           </div>
           
           <div className="px-8 pb-8 relative">
@@ -140,7 +141,7 @@ export default function StudentProfile() {
             <div className="flex justify-between items-end -mt-20 mb-6 relative z-10">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="w-36 h-36 rounded-3xl p-1.5 bg-gradient-to-br from-primary-500 via-accent-500 to-primary-500 shadow-2xl"
+                className="w-36 h-36 rounded-3xl p-1.5 bg-gradient-to-br from-[var(--emerald)] via-[var(--cyan)] to-[var(--emerald)] shadow-2xl"
               >
                 <div className="w-full h-full rounded-[20px] overflow-hidden bg-[#111111] flex items-center justify-center text-5xl font-display font-black text-white">
                   {profileData?.profile_photo ? (
@@ -170,13 +171,13 @@ export default function StudentProfile() {
                     </button>
                     <button 
                       onClick={() => navigate(`/messages?user=${profileData.id}`)}
-                      className="px-6 py-3 bg-[#111111] border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-[#1a1a24] transition-all"
+                      className="px-6 py-3 bg-[var(--surface-2)] border border-[var(--border)] text-white text-sm font-bold rounded-xl hover:bg-[var(--glass)] transition-all"
                     >
                       Message
                     </button>
                   </>
                 )}
-                <button onClick={handleCopyLink} className="p-3 bg-[#111111] border border-white/10 text-gray-400 hover:text-white rounded-xl hover:bg-[#1a1a24] transition-all relative">
+                <button onClick={handleCopyLink} className="p-3 bg-[var(--surface-2)] border border-[var(--border)] text-gray-400 hover:text-white rounded-xl hover:bg-[var(--glass)] transition-all relative">
                   <AnimatePresence>
                     {showCopied && (
                       <motion.span initial={{opacity:0, y:-10}} animate={{opacity:1, y:-25}} exit={{opacity:0}} className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-xs px-3 py-1.5 rounded-lg font-bold whitespace-nowrap shadow-xl">
@@ -243,24 +244,12 @@ export default function StudentProfile() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="col-span-2 glass-card p-6 border-white/5 flex flex-col justify-center relative overflow-hidden group"
+            className="col-span-2 glass-card p-6 border-[var(--border)] flex flex-col justify-center relative overflow-hidden group"
           >
-            <div className="absolute right-0 top-0 w-32 h-32 bg-primary-500/10 rounded-full blur-2xl group-hover:bg-primary-500/20 transition-colors"></div>
-            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Skill Galaxy</h3>
-            <div className="flex flex-wrap gap-2 relative z-10">
-              {skills.length === 0 ? (
-                <span className="text-sm text-gray-500 italic">No skills listed yet.</span>
-              ) : (
-                skills.map((skill, index) => (
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    key={index} 
-                    className="px-4 py-2 bg-[#111111]/80 backdrop-blur-md border border-white/10 hover:border-primary-500/50 rounded-xl text-xs font-bold text-gray-300 hover:text-white shadow-[0_0_10px_rgba(0,0,0,0.5)] transition-colors cursor-default"
-                  >
-                    {skill.skill_name}
-                  </motion.div>
-                ))
-              )}
+            <div className="absolute right-0 top-0 w-32 h-32 bg-[var(--emerald)]/10 rounded-full blur-2xl group-hover:bg-[var(--emerald)]/20 transition-colors pointer-events-none"></div>
+            <h3 className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-widest mb-4 z-10">Skill Constellation</h3>
+            <div className="relative z-10 w-full">
+              <SkillConstellation skills={skills} />
             </div>
           </motion.div>
         </div>

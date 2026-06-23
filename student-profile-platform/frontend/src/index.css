@@ -2,65 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #030303;
+  --surface: #08111F;
+  --surface-2: #0D1728;
+
+  --emerald: #00FFC6;
+  --cyan: #00D4FF;
+  --gold: #FFD166;
+
+  --text: #F8FAFC;
+  --muted: #94A3B8;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.04);
+}
+
 @layer base {
   body {
-    @apply bg-[#050816] text-gray-100 font-sans transition-colors duration-300;
+    @apply font-sans transition-colors duration-300;
+    background-color: var(--background);
+    color: var(--text);
   }
 
   ::-webkit-scrollbar {
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-[#03040b];
+    background-color: var(--background);
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-800 rounded-full;
+    background-color: var(--surface-2);
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-surface-700;
+    background-color: var(--border);
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-white/5 dark:bg-[#111111]/80 backdrop-blur-xl border border-white/10 dark:border-white/5 rounded-3xl shadow-2xl;
+    background-color: var(--glass);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-500 via-accent-500 to-primary-400 bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--emerald), var(--cyan));
+    -webkit-background-clip: text;
+    color: transparent;
   }
 
   .gradient-text-animate {
-    @apply bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 bg-[length:200%_auto] bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--emerald), var(--cyan), var(--emerald));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    color: transparent;
     animation: text-shine 3s linear infinite;
   }
 
   .gradient-bg {
-    @apply bg-gradient-to-br from-primary-600 via-primary-500 to-accent-500;
+    background-image: linear-gradient(to bottom right, var(--emerald), var(--cyan));
   }
 
   .gradient-bg-subtle {
-    @apply bg-gradient-to-br from-primary-50 via-white to-accent-50 dark:from-surface-900 dark:via-surface-800 dark:to-primary-950;
+    background-image: linear-gradient(to bottom right, var(--surface), var(--surface-2));
   }
 
   .btn-primary {
-    @apply px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-[length:200%_auto] hover:bg-right hover:shadow-lg hover:shadow-primary-500/30 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-500 ease-out;
+    @apply px-6 py-3 rounded-xl font-semibold transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-500 ease-out;
+    background-image: linear-gradient(to right, var(--emerald), var(--cyan));
+    color: var(--background);
+    background-size: 200% auto;
+  }
+  .btn-primary:hover {
+    background-position: right center;
+    box-shadow: 0 10px 15px -3px rgba(0, 255, 198, 0.3);
   }
 
   .btn-secondary {
-    @apply px-6 py-3 rounded-xl font-semibold border-2 border-primary-500 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950 transform hover:-translate-y-0.5 transition-all duration-300;
+    @apply px-6 py-3 rounded-xl font-semibold border-2 transform hover:-translate-y-0.5 transition-all duration-300;
+    border-color: var(--emerald);
+    color: var(--emerald);
+    background-color: transparent;
+  }
+  .btn-secondary:hover {
+    background-color: rgba(0, 255, 198, 0.1);
   }
 
   .btn-ghost {
-    @apply px-4 py-2 rounded-lg font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-700 transition-all duration-200;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    color: var(--muted);
+  }
+  .btn-ghost:hover {
+    color: var(--text);
+    background-color: var(--glass);
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-surface-700 bg-white dark:bg-surface-800 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-xl border focus:ring-2 focus:border-transparent outline-none transition-all duration-200;
+    background-color: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .input-field:focus {
+    --tw-ring-color: var(--cyan);
   }
 
   .card-hover {
-    @apply hover:shadow-2xl hover:shadow-primary-500/10 hover:-translate-y-1.5 transition-all duration-500 ease-out border border-transparent hover:border-primary-500/30;
+    @apply transition-all duration-500 ease-out;
+    border-color: transparent;
+  }
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 50px -12px rgba(0, 212, 255, 0.2);
+    border-color: rgba(0, 212, 255, 0.3);
   }
 
   .section-title {

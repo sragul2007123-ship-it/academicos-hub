@@ -14,6 +14,7 @@ import Posts from './pages/Posts'
 import Messages from './pages/Messages'
 import LearningHub from './pages/LearningHub'
 import { AnimatePresence } from 'framer-motion'
+import PageTransition from './components/PageTransition'
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -21,23 +22,24 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/student/:username" element={<StudentProfile />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/posts" element={<Posts />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/recruiter/:username" element={<RecruiterProfile />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/learning" element={<LearningHub />} />
+        <Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/register" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
+        <Route path="/student/:username" element={<PageTransition><StudentProfile /></PageTransition>} />
+        <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />
+        <Route path="/posts" element={<PageTransition><Posts /></PageTransition>} />
+        <Route path="/messages" element={<PageTransition><Messages /></PageTransition>} />
+        <Route path="/recruiter/:username" element={<PageTransition><RecruiterProfile /></PageTransition>} />
+        <Route path="/admin" element={<PageTransition><AdminPanel /></PageTransition>} />
+        <Route path="/learning" element={<PageTransition><LearningHub /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   )
 }
 
 import { ReactLenis } from '@studio-freight/react-lenis'
+import AuroraBackground from './components/AuroraBackground'
 
 function App() {
   return (
@@ -45,12 +47,12 @@ function App() {
       <ThemeProvider>
         <AuthProvider>
           <Router>
-            <div className="min-h-screen bg-[#050816] transition-colors duration-300">
+            <AuroraBackground>
               <Navbar />
-              <main className="pt-14 sm:pt-16">
+              <main className="pt-24 sm:pt-28 pb-10">
                 <AnimatedRoutes />
               </main>
-            </div>
+            </AuroraBackground>
           </Router>
         </AuthProvider>
       </ThemeProvider>

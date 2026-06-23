@@ -73,7 +73,7 @@ export default function Leaderboard() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-16 gradient-bg-subtle">
+    <div className="min-h-screen pt-24 pb-16 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
@@ -87,8 +87,8 @@ export default function Leaderboard() {
               Hall of Fame
             </span>
           </motion.div>
-          <h1 className="text-5xl font-display font-extrabold mb-4 dark:text-white">
-            🏆 <span className="gradient-text">Leaderboard</span>
+          <h1 className="text-5xl font-display font-extrabold mb-4 dark:text-white tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--emerald)] to-[var(--cyan)]">Hall of Fame</span>
           </h1>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
             See how you stack up against your friends and the entire student community. 
@@ -102,26 +102,26 @@ export default function Leaderboard() {
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="glass-card p-6 flex items-center justify-between border-l-4 border-primary-500"
+              className="glass-card p-6 flex items-center justify-between border-l-4 border-[var(--emerald)]"
             >
               <div>
                 <p className="text-sm text-gray-400 font-medium">Global Ranking</p>
                 <h3 className="text-3xl font-bold dark:text-white">#{myStats.globalRank || 'N/A'}</h3>
               </div>
-              <div className="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 text-xl">
+              <div className="w-12 h-12 rounded-full bg-[var(--emerald)]/20 flex items-center justify-center text-[var(--emerald)] text-xl">
                 🌍
               </div>
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="glass-card p-6 flex items-center justify-between border-l-4 border-accent-500"
+              className="glass-card p-6 flex items-center justify-between border-l-4 border-[var(--gold)]"
             >
               <div>
                 <p className="text-sm text-gray-400 font-medium">Friends Ranking</p>
                 <h3 className="text-3xl font-bold dark:text-white">#{myStats.friendsRank || 'N/A'}</h3>
               </div>
-              <div className="w-12 h-12 rounded-full bg-accent-100 dark:bg-accent-900/30 flex items-center justify-center text-accent-600 text-xl">
+              <div className="w-12 h-12 rounded-full bg-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] text-xl">
                 👥
               </div>
             </motion.div>
@@ -136,8 +136,8 @@ export default function Leaderboard() {
                 onClick={() => setActiveTab('friends')}
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold transition-all ${
                   activeTab === 'friends'
-                    ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30 scale-105'
-                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-surface-700'
+                    ? 'bg-[var(--emerald)] text-[var(--background)] shadow-lg scale-105'
+                    : 'text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--glass)]'
                 }`}
               >
                 👥 <span className="hidden sm:inline">Friends Only</span> <span className="sm:hidden">Friends</span>
@@ -146,9 +146,9 @@ export default function Leaderboard() {
             <button
               onClick={() => setActiveTab('global')}
               className={`flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold transition-all ${
-                activeTab === 'global'
-                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30 scale-105'
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-surface-700'
+                  activeTab === 'global'
+                  ? 'bg-[var(--cyan)] text-[var(--background)] shadow-lg scale-105'
+                  : 'text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--glass)]'
               }`}
             >
               🌍 <span className="hidden sm:inline">Global Rankings</span> <span className="sm:hidden">Global</span>
@@ -174,7 +174,7 @@ export default function Leaderboard() {
                    transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
                    className="text-center order-1"
                 >
-                  <div className="glass-card-animated p-4 w-32 md:w-40 bg-gradient-to-t from-gray-50/50 to-white/50 dark:from-surface-700/50 dark:to-surface-800/50">
+                  <div className="glass-card p-4 w-32 md:w-40">
                     <div className="relative inline-block mb-3">
                       <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 p-1 flex items-center justify-center shadow-lg">
                         <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-surface-600 flex items-center justify-center font-bold text-2xl relative">
@@ -191,7 +191,7 @@ export default function Leaderboard() {
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm shadow-md border-2 border-white dark:border-surface-800">🥈</div>
                     </div>
-                    <Link to={`/student/${currentStudents[1].username}`} className="text-sm font-bold dark:text-white hover:text-primary-500 truncate block transition-colors uppercase tracking-tight">{currentStudents[1].name}</Link>
+                    <Link to={`/student/${currentStudents[1].username}`} className="text-sm font-bold dark:text-white hover:text-[var(--cyan)] truncate block transition-colors uppercase tracking-tight">{currentStudents[1].name}</Link>
                     <p className="text-xs text-gray-400 mt-1 font-black">{currentStudents[1].score} PTS</p>
                   </div>
                 </motion.div>
@@ -203,10 +203,10 @@ export default function Leaderboard() {
                   transition={{ duration: 0.8, delay: 0.1, type: "spring" }}
                   className="text-center order-2 z-10"
                 >
-                  <div className="glass-card-animated p-6 w-36 md:w-48 ring-4 ring-yellow-400/20 bg-gradient-to-t from-yellow-50/50 to-white/50 dark:from-yellow-900/10 dark:to-surface-800/50 relative overflow-hidden shadow-2xl">
+                  <div className="glass-card p-6 w-36 md:w-48 ring-4 ring-[var(--gold)]/20 relative overflow-hidden shadow-2xl">
                     <div className="absolute top-0 right-0 p-2 opacity-20 text-4xl animate-bounce">👑</div>
                     <div className="relative inline-block mb-3 scale-110">
-                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-yellow-300 to-amber-500 p-1 flex items-center justify-center shadow-xl ring-4 ring-yellow-400/30">
+                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--emerald)] p-1 flex items-center justify-center shadow-xl ring-4 ring-[var(--gold)]/30">
                         <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-surface-600 flex items-center justify-center font-bold text-3xl relative">
                           {currentStudents[0].profile_photo ? (
                             <img src={currentStudents[0].profile_photo} alt="" className="w-full h-full object-cover" />
@@ -221,8 +221,8 @@ export default function Leaderboard() {
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-lg shadow-md border-2 border-white dark:border-surface-800">🥇</div>
                     </div>
-                    <Link to={`/student/${currentStudents[0].username}`} className="text-base font-black dark:text-white hover:text-primary-500 truncate block transition-colors uppercase tracking-wide">{currentStudents[0].name}</Link>
-                    <p className="text-sm font-black text-primary-500 mt-1 glow-text">{currentStudents[0].score} PTS</p>
+                    <Link to={`/student/${currentStudents[0].username}`} className="text-base font-black dark:text-white hover:text-[var(--gold)] truncate block transition-colors uppercase tracking-wide">{currentStudents[0].name}</Link>
+                    <p className="text-sm font-black text-[var(--gold)] mt-1">{currentStudents[0].score} PTS</p>
                   </div>
                 </motion.div>
  
@@ -233,7 +233,7 @@ export default function Leaderboard() {
                   transition={{ duration: 0.8, delay: 0.5, type: "spring" }}
                   className="text-center order-3"
                 >
-                  <div className="glass-card-animated p-4 w-32 md:w-40 bg-gradient-to-t from-orange-50/50 to-white/50 dark:from-orange-900/10 dark:to-surface-800/50">
+                  <div className="glass-card p-4 w-32 md:w-40">
                     <div className="relative inline-block mb-3">
                       <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-amber-600 to-orange-800 p-1 flex items-center justify-center shadow-lg">
                         <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-surface-600 flex items-center justify-center font-bold text-2xl relative">
@@ -250,7 +250,7 @@ export default function Leaderboard() {
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-orange-700 text-white rounded-full flex items-center justify-center text-sm shadow-md border-2 border-white dark:border-surface-800">🥉</div>
                     </div>
-                    <Link to={`/student/${currentStudents[2].username}`} className="text-sm font-bold dark:text-white hover:text-primary-500 truncate block transition-colors uppercase tracking-tight">{currentStudents[2].name}</Link>
+                    <Link to={`/student/${currentStudents[2].username}`} className="text-sm font-bold dark:text-white hover:text-[var(--gold)] truncate block transition-colors uppercase tracking-tight">{currentStudents[2].name}</Link>
                     <p className="text-xs text-gray-400 mt-1 font-black">{currentStudents[2].score} PTS</p>
                   </div>
                 </motion.div>
@@ -280,8 +280,8 @@ export default function Leaderboard() {
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.05 }}
-                          className={`border-b border-gray-50 dark:border-surface-700/50 hover:bg-primary-50/30 dark:hover:bg-primary-900/10 transition-all ${
-                            isMe ? 'bg-primary-50/50 dark:bg-primary-900/20' : ''
+                          className={`border-b border-[var(--border)] hover:bg-[var(--glass)] transition-all ${
+                            isMe ? 'bg-[var(--emerald)]/10' : ''
                           }`}
                         >
                           <td className="px-6 py-4">
@@ -294,7 +294,7 @@ export default function Leaderboard() {
                                 </span>
                               )}
                               {isMe && (
-                                <span className="text-[10px] font-black bg-primary-500 text-white px-1.5 py-0.5 rounded uppercase">YOU</span>
+                                <span className="text-[10px] font-black bg-[var(--emerald)] text-[var(--background)] px-1.5 py-0.5 rounded uppercase">YOU</span>
                               )}
                             </div>
                           </td>
@@ -305,7 +305,7 @@ export default function Leaderboard() {
                                   {student.profile_photo ? (
                                     <img src={student.profile_photo} alt="" className="w-full h-full object-cover" />
                                   ) : (
-                                    <div className="w-full h-full gradient-bg flex items-center justify-center text-white font-bold">
+                                    <div className="w-full h-full bg-gradient-to-br from-[var(--emerald)] to-[var(--cyan)] flex items-center justify-center text-[var(--background)] font-bold">
                                       {student.name?.[0]?.toUpperCase()}
                                     </div>
                                   )}
@@ -318,7 +318,7 @@ export default function Leaderboard() {
                                 )}
                               </div>
                               <div>
-                                <p className="text-base font-bold dark:text-white group-hover:text-primary-500 transition-colors">{student.name}</p>
+                                <p className="text-base font-bold dark:text-white group-hover:text-[var(--emerald)] transition-colors">{student.name}</p>
                                 <p className="text-xs text-gray-400 font-medium">{student.role || 'Student'}</p>
                               </div>
                             </Link>
@@ -340,7 +340,7 @@ export default function Leaderboard() {
                             </div>
                           </td>
                           <td className="px-6 py-4 text-center">
-                            <span className="text-xl font-black text-primary-500 tracking-tight">{student.score}</span>
+                            <span className="text-xl font-black text-[var(--emerald)] tracking-tight">{student.score}</span>
                           </td>
                         </motion.tr>
                       )
@@ -357,7 +357,7 @@ export default function Leaderboard() {
                                 : "The leaderboard is currently empty."}
                             </p>
                             {activeTab === 'friends' && (
-                              <Link to="/dashboard" className="mt-4 inline-block px-6 py-2 bg-primary-500 text-white rounded-lg text-sm font-bold shadow-lg shadow-primary-500/30">
+                              <Link to="/dashboard" className="mt-4 inline-block px-6 py-2 bg-[var(--emerald)] text-[var(--background)] rounded-lg text-sm font-bold shadow-lg">
                                 Find Friends
                               </Link>
                             )}
@@ -396,7 +396,7 @@ export default function Leaderboard() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="glass-card p-4 border-b-4 border-accent-500/30"
+                  className="glass-card p-4 border-b-4 border-[var(--cyan)]/30"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <img 
@@ -416,7 +416,7 @@ export default function Leaderboard() {
                       {activity.type === 'project' ? '🚀' : '📜'}
                     </span>
                     <div className="min-w-0">
-                      <p className="text-[10px] uppercase font-black tracking-tighter text-accent-500 mb-0.5">
+                      <p className="text-[10px] uppercase font-black tracking-tighter text-[var(--cyan)] mb-0.5">
                         New {activity.type}
                       </p>
                       <p className="text-sm font-semibold dark:text-gray-200 line-clamp-2 leading-snug">
@@ -426,7 +426,7 @@ export default function Leaderboard() {
                   </div>
                   <Link 
                     to={`/student/${activity.user?.username}`}
-                    className="mt-3 block text-center text-[10px] font-bold py-1.5 rounded-lg bg-gray-50 dark:bg-surface-700 hover:bg-primary-500 hover:text-white transition-all uppercase tracking-widest"
+                    className="mt-3 block text-center text-[10px] font-bold py-1.5 rounded-lg bg-[var(--surface-2)] hover:bg-[var(--emerald)] hover:text-[var(--background)] transition-all uppercase tracking-widest"
                   >
                     View profile
                   </Link>

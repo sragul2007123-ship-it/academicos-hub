@@ -436,7 +436,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-12 bg-gray-50 dark:bg-black transition-colors duration-300">
+    <div className="min-h-screen pt-20 pb-12 transition-colors duration-300">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         
         {/* Message Toast */}
@@ -464,11 +464,11 @@ export default function Dashboard() {
                 <p className="text-gray-400 font-medium mt-1">Welcome back, {profile.name?.split(' ')[0] || 'Student'}. Your identity score is looking strong.</p>
               </div>
               <div className="flex items-center gap-4">
-                <button onClick={() => setIsEditing(true)} className="px-6 py-2.5 rounded-xl font-bold bg-[#111111] border border-white/10 text-white hover:bg-[#1a1a24] transition-all flex items-center gap-2">
+                <button onClick={() => setIsEditing(true)} className="px-6 py-2.5 rounded-xl font-bold bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--emerald)] transition-all flex items-center gap-2">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   Settings
                 </button>
-                <a href={`/student/${profile.username}`} target="_blank" rel="noreferrer" className="px-6 py-2.5 rounded-xl font-bold bg-white text-black hover:bg-gray-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                <a href={`/student/${profile.username}`} target="_blank" rel="noreferrer" className="px-6 py-2.5 rounded-xl font-bold bg-[var(--text)] text-[var(--background)] hover:bg-gray-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
                   View Public Profile
                 </a>
               </div>
@@ -482,13 +482,13 @@ export default function Dashboard() {
                 whileHover={{ scale: 1.02 }}
                 className="col-span-1 md:col-span-2 row-span-2 glass-card p-6 md:p-8 relative overflow-hidden group cursor-pointer border-primary-500/20 shadow-[0_0_30px_rgba(99,102,241,0.05)] hover:shadow-[0_0_40px_rgba(99,102,241,0.1)]"
               >
-                <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary-500/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary-500/30 transition-colors"></div>
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-[var(--cyan)]/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-[var(--cyan)]/30 transition-colors"></div>
                 
                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Academic Identity Score</h3>
                 <div className="flex flex-col sm:flex-row items-center gap-8">
                   <div className="relative w-40 h-40 shrink-0">
                     <svg className="w-full h-full transform -rotate-90">
-                      <circle cx="80" cy="80" r="70" className="stroke-[#111111]" strokeWidth="12" fill="none" />
+                      <circle cx="80" cy="80" r="70" className="stroke-[var(--surface-2)]" strokeWidth="12" fill="none" />
                       <circle cx="80" cy="80" r="70" className="stroke-primary-500 transition-all duration-1500" strokeWidth="12" fill="none" strokeLinecap="round" strokeDasharray="439.8" strokeDashoffset={439.8 - (439.8 * completionPercent) / 100} />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -503,17 +503,17 @@ export default function Dashboard() {
                         <span>Profile Completion</span>
                         <span className="text-white">{completionPercent}%</span>
                       </div>
-                      <div className="w-full h-2 bg-[#111111] rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-[var(--surface-2)] rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-primary-600 to-accent-500 rounded-full" style={{width: `${completionPercent}%`}}></div>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4 mt-6">
-                      <div className="bg-[#111111] p-3 rounded-xl border border-white/5">
+                      <div className="bg-[var(--surface-2)] p-3 rounded-xl border border-[var(--border)]">
                         <p className="text-[10px] uppercase font-bold text-gray-500 mb-1">Placement Readiness</p>
-                        <p className="text-lg font-bold text-emerald-400">High</p>
+                        <p className="text-lg font-bold text-[var(--emerald)]">High</p>
                       </div>
-                      <div className="bg-[#111111] p-3 rounded-xl border border-white/5">
+                      <div className="bg-[var(--surface-2)] p-3 rounded-xl border border-[var(--border)]">
                         <p className="text-[10px] uppercase font-bold text-gray-500 mb-1">Profile Views</p>
                         <p className="text-lg font-bold text-white">24</p>
                       </div>
@@ -547,7 +547,7 @@ export default function Dashboard() {
               <div className="col-span-1 md:col-span-2 row-span-1 glass-card p-6 flex items-center gap-6 overflow-hidden relative group border-white/5 hover:border-emerald-500/20 transition-colors cursor-pointer" onClick={() => { setIsEditing(true); setActiveTab('certificates'); }}>
                 <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0f111a] to-transparent z-10 pointer-events-none"></div>
                 
-                <div className="shrink-0 z-20 bg-[#0f111a] pr-6">
+                <div className="shrink-0 z-20 bg-[var(--surface-2)] pr-6">
                   <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-1">Certifications</h3>
                   <p className="text-2xl font-black text-white">{certificates.length} Earned</p>
                 </div>
@@ -559,7 +559,7 @@ export default function Dashboard() {
                     </div>
                   ) : (
                     certificates.map((cert, i) => (
-                      <div key={i} className="px-4 py-3 bg-[#111111] border border-white/5 rounded-xl flex items-center gap-3 shrink-0 group-hover:bg-[#151520] transition-colors">
+                      <div key={i} className="px-4 py-3 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl flex items-center gap-3 shrink-0 hover:bg-[var(--glass)] transition-colors">
                         <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">📜</div>
                         <div>
                           <p className="text-sm font-bold text-white max-w-[150px] truncate">{cert.title}</p>
@@ -585,14 +585,14 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="p-4 rounded-xl bg-[#111111] border border-white/5 relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500"></div>
+                  <div className="p-4 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--emerald)]"></div>
                     <p className="text-sm text-gray-300 leading-relaxed font-medium">
                       "Adding <strong className="text-white">2 React projects</strong> to your portfolio could increase your recruiter visibility score by 12%."
                     </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#111111] border border-white/5 relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+                  <div className="p-4 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--gold)]"></div>
                     <p className="text-sm text-gray-300 leading-relaxed font-medium">
                       "Your Machine Learning skill level is high, consider adding a <strong className="text-white">certification</strong> to validate it."
                     </p>

@@ -191,18 +191,18 @@ function ProgressRail({ view }) {
             <div className="flex items-center gap-1.5">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all ${
                 active 
-                  ? 'bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                  ? 'bg-[var(--cyan)] border-[var(--cyan)] text-white shadow-md' 
                   : done 
-                    ? 'bg-emerald-500 border-emerald-500 text-white' 
+                    ? 'bg-[var(--emerald)] border-[var(--emerald)] text-[var(--background)]' 
                     : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
               }`}>
                 {done ? "✓" : i + 1}
               </div>
               <span className={`text-[10px] sm:text-xs font-semibold whitespace-nowrap ${
                 active 
-                  ? 'text-indigo-600 dark:text-indigo-400' 
+                  ? 'text-[var(--cyan)]' 
                   : done 
-                    ? 'text-emerald-500' 
+                    ? 'text-[var(--emerald)]' 
                     : 'text-slate-400 dark:text-slate-500'
               }`}>
                 {s.label}
@@ -346,7 +346,7 @@ function InputScreen({ onNext }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-6 text-center animate-reveal">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-indigo-500 to-sky-400 animate-pulse flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[var(--cyan)] to-[var(--emerald)] animate-pulse flex items-center justify-center shadow-lg">
           <svg className="w-8 h-8 text-white animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.2" />
           </svg>
@@ -356,7 +356,7 @@ function InputScreen({ onNext }) {
           <p className="text-xs text-slate-400 mt-1">{LOAD_MSGS[loadStep]}</p>
         </div>
         <div className="w-full max-w-xs bg-slate-200 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
-          <div className="bg-indigo-600 h-full rounded-full transition-all duration-1000" style={{ width: `${((loadStep + 1) / LOAD_MSGS.length) * 100}%` }} />
+          <div className="bg-[var(--cyan)] h-full rounded-full transition-all duration-1000" style={{ width: `${((loadStep + 1) / LOAD_MSGS.length) * 100}%` }} />
         </div>
         <div className="flex flex-col gap-2 mt-4 text-left w-full max-w-sm px-4">
           {LOAD_MSGS.map((s, i) => (
@@ -364,7 +364,7 @@ function InputScreen({ onNext }) {
               <div className={`w-2.5 h-2.5 rounded-full ${
                 i < loadStep ? 'bg-emerald-500' : i === loadStep ? 'bg-indigo-600 animate-ping' : 'bg-slate-300 dark:bg-slate-700'
               }`} />
-              <span className={`text-xs ${i === loadStep ? 'text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-500 dark:text-slate-400'}`}>{s}</span>
+              <span className={`text-xs ${i === loadStep ? 'text-[var(--cyan)] font-semibold' : 'text-slate-500 dark:text-slate-400'}`}>{s}</span>
             </div>
           ))}
         </div>
@@ -379,7 +379,7 @@ function InputScreen({ onNext }) {
           ✨ Lecture Input
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Drop your <span className="text-indigo-600 dark:text-indigo-400 italic font-serif">lecture.</span> We'll study it.
+          Drop your <span className="text-[var(--cyan)] italic font-serif">lecture.</span> We'll study it.
         </h1>
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-lg mx-auto">
           Paste any transcript, notes, or copy-paste text. Mellow turns it into beautifully structured study summaries.
@@ -393,7 +393,7 @@ function InputScreen({ onNext }) {
         </div>
 
         <textarea
-          className="w-full h-48 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+          className="w-full h-48 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-[var(--surface-2)] focus:outline-none focus:ring-2 focus:ring-[var(--cyan)] text-sm leading-relaxed text-[var(--text)]"
           placeholder="Paste lecture content, book paragraphs, or video transcript..."
           value={text}
           onChange={(e) => { setText(e.target.value); setErr(""); }}
@@ -433,7 +433,7 @@ function InputScreen({ onNext }) {
           <button
             onClick={go}
             disabled={!canGo}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-lg shadow-indigo-500/20 disabled:opacity-50 transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--cyan)] hover:opacity-90 text-[var(--background)] font-bold text-sm shadow-lg disabled:opacity-50 transition-colors cursor-pointer"
           >
             Generate Study Notes
           </button>
@@ -473,7 +473,7 @@ function NotesScreen({ notes, onNext, onNextDebate }) {
       <div className="flex justify-between items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
         <div>
           <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-500">YOUR STUDY NOTES</span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 italic font-serif leading-none mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--cyan)] italic font-serif leading-none mt-1">
             {notes.title}
           </h1>
         </div>
@@ -502,7 +502,7 @@ function NotesScreen({ notes, onNext, onNextDebate }) {
           <div className="flex flex-col gap-3">
             {notes.keyConcepts.map((c, i) => (
               <div className="flex items-start gap-2.5" key={i}>
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--cyan)] mt-2 flex-shrink-0" />
                 <span className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{rc(c)}</span>
               </div>
             ))}
@@ -517,8 +517,8 @@ function NotesScreen({ notes, onNext, onNextDebate }) {
           </div>
           <div className="flex flex-col gap-4">
             {notes.explanations.map((e, i) => (
-              <div className="border-l-2 border-indigo-500 pl-3 py-0.5" key={i}>
-                <h4 className="font-bold text-xs text-indigo-600 dark:text-indigo-400">{e.term}</h4>
+              <div className="border-l-2 border-[var(--cyan)] pl-3 py-0.5" key={i}>
+                <h4 className="font-bold text-xs text-[var(--cyan)]">{e.term}</h4>
                 <p className="text-xs text-slate-505 dark:text-slate-400 mt-1 leading-relaxed">{e.definition}</p>
               </div>
             ))}
@@ -542,7 +542,7 @@ function NotesScreen({ notes, onNext, onNextDebate }) {
       </div>
 
       {/* CTA Strip */}
-      <div className="bg-gradient-to-r from-indigo-900 to-indigo-950 text-white rounded-3xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl shadow-indigo-900/10">
+      <div className="bg-[var(--surface-2)] text-white rounded-3xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl border border-[var(--border)]">
         <div>
           <h3 className="text-lg font-bold">Ready to test your thinking?</h3>
           <p className="text-xs text-indigo-200 mt-1">Explain the key concepts in your own words, or jump straight into the debate mode.</p>
@@ -551,7 +551,7 @@ function NotesScreen({ notes, onNext, onNextDebate }) {
           <button onClick={onNext} className="flex-1 md:flex-initial px-5 py-3 rounded-xl bg-white text-indigo-950 hover:bg-slate-100 font-bold text-sm transition-colors cursor-pointer text-center">
             Explain Back
           </button>
-          <button onClick={onNextDebate} className="flex-1 md:flex-initial px-5 py-3 rounded-xl bg-indigo-800 hover:bg-indigo-700 border border-indigo-700 text-white font-bold text-sm transition-colors cursor-pointer text-center">
+          <button onClick={onNextDebate} className="flex-1 md:flex-initial px-5 py-3 rounded-xl bg-[var(--cyan)] hover:opacity-90 text-[var(--background)] font-bold text-sm transition-colors cursor-pointer text-center">
             ⚡ Debate
           </button>
         </div>
@@ -614,7 +614,7 @@ function ExplainScreen({ notes, onNext }) {
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2">
           💬 Explain Back
         </span>
-        <h1 className="text-3xl font-extrabold tracking-tight">Put it in your <span className="text-indigo-600 dark:text-indigo-400 italic font-serif">own words.</span></h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Put it in your <span className="text-[var(--cyan)] italic font-serif">own words.</span></h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Pick a concept tab, write your explanation, and get kind suggestions on your logic gaps.</p>
       </div>
 
@@ -626,7 +626,7 @@ function ExplainScreen({ notes, onNext }) {
             onClick={() => setSel(i)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
               sel === i 
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/10' 
+                ? 'bg-[var(--cyan)] text-[var(--background)] shadow-md' 
                 : 'bg-white dark:bg-slate-900 border border-slate-202/50 dark:border-slate-800 text-slate-505 dark:text-slate-400 hover:bg-slate-50'
             }`}
           >
@@ -647,7 +647,7 @@ function ExplainScreen({ notes, onNext }) {
         <textarea
           ref={ta}
           disabled={checking}
-          className="w-full h-32 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+          className="w-full h-32 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-[var(--surface-2)] focus:outline-none focus:ring-2 focus:ring-[var(--cyan)] text-sm leading-relaxed text-[var(--text)]"
           placeholder="Write your explanation here..."
           value={text}
           onChange={(e) => {
@@ -659,7 +659,7 @@ function ExplainScreen({ notes, onNext }) {
         <div className="flex justify-between items-center mt-3 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-20 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-              <div className="bg-indigo-600 h-full rounded-full transition-all duration-300" style={{ width: `${pct}%` }} />
+              <div className="bg-[var(--cyan)] h-full rounded-full transition-all duration-300" style={{ width: `${pct}%` }} />
             </div>
             <span className={`font-semibold ${text.length >= min ? 'text-emerald-500' : 'text-slate-400'}`}>
               {text.length >= min ? "✓ Ready" : `${text.length} / ${min}`}
@@ -677,7 +677,7 @@ function ExplainScreen({ notes, onNext }) {
           <button
             onClick={check}
             disabled={!can}
-            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md disabled:opacity-50 transition-colors cursor-pointer"
+            className="px-5 py-2.5 bg-[var(--cyan)] hover:opacity-90 text-[var(--background)] font-bold text-xs rounded-xl shadow-md disabled:opacity-50 transition-colors cursor-pointer"
           >
             {checking ? "Checking..." : "Check Explanation"}
           </button>
@@ -749,7 +749,7 @@ function ExplainScreen({ notes, onNext }) {
                 Next Concept →
               </button>
             ) : (
-              <button onClick={onNext} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md cursor-pointer ml-auto">
+              <button onClick={onNext} className="px-4 py-2 bg-[var(--cyan)] text-[var(--background)] rounded-xl text-xs font-semibold shadow-md cursor-pointer ml-auto hover:opacity-90">
                 Enter Debate Hub ⚡
               </button>
             )}
@@ -821,7 +821,7 @@ function DebateScreen({ notes, onScore }) {
   if (scoring) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-6 text-center animate-reveal">
-        <div className="w-16 h-16 rounded-full bg-indigo-600 animate-pulse flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <div className="w-16 h-16 rounded-full bg-[var(--cyan)] animate-pulse flex items-center justify-center shadow-lg">
           <svg className="w-8 h-8 text-white animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
@@ -863,14 +863,14 @@ function DebateScreen({ notes, onScore }) {
         {msgs.map((m, i) => (
           <div key={i} className={`flex items-start gap-3 max-w-[85%] ${m.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`}>
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-              m.role === 'user' ? 'bg-slate-100 dark:bg-slate-800 text-slate-600' : 'bg-indigo-500 text-white'
+              m.role === 'user' ? 'bg-slate-100 dark:bg-slate-800 text-slate-600' : 'bg-[var(--cyan)] text-[var(--background)]'
             }`}>
               {m.role === 'user' ? "🙋" : "✦"}
             </div>
             <div className={`p-3 rounded-2xl text-xs leading-relaxed ${
               m.role === 'user' 
-                ? 'bg-indigo-600 text-white rounded-tr-none' 
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-tl-none border border-slate-200/20 dark:border-none'
+                ? 'bg-[var(--cyan)] text-[var(--background)] rounded-tr-none' 
+                : 'bg-slate-100 dark:bg-[var(--surface-2)] text-[var(--text)] rounded-tl-none border border-slate-200/20 dark:border-[var(--border)]'
             }`}>
               {m.content}
               <div className={`text-[8px] text-right mt-1.5 block opacity-50 ${m.role === 'user' ? 'text-indigo-100' : 'text-slate-400'}`}>{m.time}</div>
@@ -880,7 +880,7 @@ function DebateScreen({ notes, onScore }) {
 
         {typing && (
           <div className="flex items-start gap-3 max-w-[80%] self-start animate-pulse">
-            <div className="w-7 h-7 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs font-bold">✦</div>
+            <div className="w-7 h-7 rounded-full bg-[var(--cyan)] text-[var(--background)] flex items-center justify-center text-xs font-bold">✦</div>
             <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none text-slate-400 flex gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" />
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-100" />
@@ -921,12 +921,12 @@ function DebateScreen({ notes, onScore }) {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
             }}
-            className="flex-1 p-2.5 text-xs bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-202 dark:border-slate-800/80 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none leading-relaxed"
+            className="flex-1 p-2.5 text-xs bg-[var(--surface-2)] rounded-xl border border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[var(--cyan)] resize-none leading-relaxed text-[var(--text)]"
           />
           <button
             onClick={() => send()}
             disabled={!inp.trim() || typing}
-            className="p-2.5 rounded-xl bg-indigo-600 text-white disabled:opacity-40 transition-opacity cursor-pointer shadow-md shadow-indigo-500/10"
+            className="p-2.5 rounded-xl bg-[var(--cyan)] text-[var(--background)] disabled:opacity-40 transition-opacity cursor-pointer shadow-md"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -951,7 +951,7 @@ function ScoreScreen({ scores, notes, onDebateAgain }) {
     <div className="animate-reveal flex flex-col gap-6">
       {/* Orb Card */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-lg text-center flex flex-col items-center gap-3">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 via-indigo-600 to-sky-400 p-0.5 shadow-lg shadow-indigo-500/20 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[var(--cyan)] to-[var(--emerald)] p-0.5 shadow-lg flex items-center justify-center">
           <div className="w-full h-full bg-white dark:bg-slate-900 rounded-full flex flex-col items-center justify-center leading-none">
             <span className="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">{total.toFixed(1)}</span>
             <span className="text-[9px] font-bold text-slate-400 block mt-1">OUT OF 10</span>
@@ -1018,7 +1018,7 @@ function ScoreScreen({ scores, notes, onDebateAgain }) {
 
       {/* Actions */}
       <div className="flex gap-3 border-t border-slate-100 dark:border-slate-800 pt-4">
-        <button onClick={onDebateAgain} className="flex-1 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer text-center">
+        <button onClick={onDebateAgain} className="flex-1 px-4 py-3 bg-[var(--cyan)] hover:opacity-90 text-[var(--background)] font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer text-center">
           ⚡ Debate Again
         </button>
         <button onClick={() => window.location.reload()} className="flex-1 px-4 py-3 border border-slate-202 dark:border-slate-800 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 transition-colors cursor-pointer text-center">
