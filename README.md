@@ -1,6 +1,6 @@
-# ACADEMICOS — Starter Scaffold
+# academicos — Starter Scaffold
 
-This scaffold provides a minimal Next.js + TypeScript + Tailwind starter tailored for the ACADEMICOS visual system.
+This scaffold provides a minimal Next.js + TypeScript + Tailwind starter tailored for the academicos visual system.
 
 Quick start
 

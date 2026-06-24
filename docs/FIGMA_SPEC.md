@@ -1,6 +1,6 @@
-# Figma Spec — ACADEMICOS (starter)
+# Figma Spec — academicos (starter)
 
-This document outlines the basic artboard and tokens for the ACADEMICOS visual system.
+This document outlines the basic artboard and tokens for the academicos visual system.
 
 Tokens
 - Colors: see `design-tokens.json`

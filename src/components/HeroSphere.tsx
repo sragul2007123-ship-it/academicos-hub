@@ -1,10 +1,9 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Html, OrbitControls } from '@react-three/drei'
 import { useRef, useState, useMemo } from 'react'
 import * as THREE from 'three'
 
 function AuroraSphere({ pointer }: { pointer: { x: number; y: number } }){
-  const mesh = useRef<THREE.Mesh>(null!)
+  const mesh = useRef<THREE.Group>(null!)
   useFrame((state, delta) => {
     // gentle rotation influenced by pointer
     mesh.current.rotation.y += (pointer.x * 0.6 - mesh.current.rotation.y) * 0.05
@@ -73,9 +72,6 @@ function OrbitingCards(){
           <mesh key={i} position={pos} rotation={[0, -a + Math.PI/2, 0]}>
             <planeGeometry args={[0.56, 0.34]} />
             <meshStandardMaterial color="#071229" transparent opacity={0.9} metalness={0.2} roughness={0.4} emissive={'#001B22'} emissiveIntensity={0.02} />
-            <Html center style={{pointerEvents:'none'}} position={[0,0,0.01]}>
-              <div style={{color:'var(--text)', fontSize:12, fontFamily:'Inter', width:120, textAlign:'center'}}>{c}</div>
-            </Html>
           </mesh>
         )
       })}
@@ -99,7 +95,7 @@ export default function HeroSphere(){
       <Particles count={140} />
       <OrbitingCards />
 
-      <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={Math.PI/3} maxPolarAngle={Math.PI/1.8} />
+      {/* no external OrbitControls to avoid drei dependency; scene is static */}
     </Canvas>
   )
 }
