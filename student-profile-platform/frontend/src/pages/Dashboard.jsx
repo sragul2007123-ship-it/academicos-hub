@@ -902,16 +902,6 @@ export default function Dashboard() {
                     </div>
                   ))}
                 </div>
-                
-                <button 
-                  onClick={(e) => {
-                    if (requireAuth(e)) {
-                      setShowAnalysisModal(true);
-                    }
-                  }}
-                  className="w-full mt-6 py-3 rounded-xl font-bold text-sm text-white bg-white/5 hover:bg-white/10 transition-colors">
-                  View Full Analysis
-                </button>
               </div>
 
               {/* Mini Feed / Recent Activity */}
