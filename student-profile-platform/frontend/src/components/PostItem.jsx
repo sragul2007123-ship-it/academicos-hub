@@ -102,13 +102,13 @@ export default function PostItem({ initialPost, onDelete }) {
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-3xl shadow-xl border border-white/20 overflow-hidden w-full text-left relative z-10">
       <div className="p-4 flex items-center justify-between border-b border-white/10">
-        <Link to={`/student/${post.users?.username}`} className="flex items-center gap-3">
+        <Link to={`/student/${post.users?.username || post.users?.id}`} className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--emerald)] to-[var(--cyan)] overflow-hidden border-2 border-[var(--border)]">
             {post.users?.profile_photo ? <img src={post.users.profile_photo} className="w-full h-full object-cover" /> : post.users?.name?.[0]}
           </div>
           <div>
             <h4 className="font-bold text-sm text-[var(--text)] leading-none">{post.users?.name}</h4>
-            <span className="text-[10px] text-[var(--emerald)] font-bold">@{post.users?.username}</span>
+            <span className="text-[10px] text-[var(--emerald)] font-bold">@{post.users?.username || 'No username'}</span>
           </div>
         </Link>
         <div className="flex items-center gap-2">

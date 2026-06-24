@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from typing import List, Optional
 from database import supabase
+import uuid
 
 router = APIRouter()
 
@@ -38,9 +39,21 @@ async def get_all_recruiters(skip: int = 0, limit: int = 20):
 async def get_recruiter_profile(username: str):
     """Get detailed recruiter profile"""
     try:
-        res = supabase.table("users").select(
-            "*, profiles(*)"
-        ).eq("username", username).eq("user_type", "recruiter").single().execute()
+        is_uuid = False
+        try:
+            uuid.UUID(username)
+            is_uuid = True
+        except ValueError:
+            pass
+
+        if is_uuid:
+            res = supabase.table("users").select(
+                "*, profiles(*)"
+            ).eq("id", username).eq("user_type", "recruiter").single().execute()
+        else:
+            res = supabase.table("users").select(
+                "*, profiles(*)"
+            ).eq("username", username).eq("user_type", "recruiter").single().execute()
         
         if not res.data:
             raise HTTPException(status_code=404, detail="Recruiter not found")

@@ -148,7 +148,7 @@ export default function AdminPanel() {
                       {student.username ? (
                         <a href={`/student/${student.username}`} className="text-primary-500 hover:underline">@{student.username}</a>
                       ) : (
-                        <span className="text-gray-400">—</span>
+                        <a href={`/student/${student.id}`} className="text-gray-400 hover:underline italic font-normal">View (No username)</a>
                       )}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">

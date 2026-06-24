@@ -244,7 +244,7 @@ export default function Leaderboard() {
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[var(--surface-2)] rounded-full flex items-center justify-center text-sm shadow-[0_0_15px_rgba(0,212,255,0.3)] border border-[var(--cyan)]">🥈</div>
                     </div>
-                    <Link to={`/student/${currentStudents[1].username}`} className="text-sm font-bold text-[var(--text)] hover:text-[var(--cyan)] truncate block transition-colors uppercase tracking-tight">{currentStudents[1].name}</Link>
+                    <Link to={`/student/${currentStudents[1].username || currentStudents[1].id}`} className="text-sm font-bold text-[var(--text)] hover:text-[var(--cyan)] truncate block transition-colors uppercase tracking-tight">{currentStudents[1].name}</Link>
                     <p className="text-xs text-[var(--muted)] mt-1 font-black">{currentStudents[1].score} PTS</p>
                   </div>
                 </motion.div>
@@ -274,7 +274,7 @@ export default function Leaderboard() {
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--surface-2)] rounded-full flex items-center justify-center text-lg shadow-[0_0_20px_rgba(255,209,102,0.4)] border border-[var(--gold)]">🥇</div>
                     </div>
-                    <Link to={`/student/${currentStudents[0].username}`} className="text-base font-black text-[var(--text)] hover:text-[var(--gold)] truncate block transition-colors uppercase tracking-wide">{currentStudents[0].name}</Link>
+                    <Link to={`/student/${currentStudents[0].username || currentStudents[0].id}`} className="text-base font-black text-[var(--text)] hover:text-[var(--gold)] truncate block transition-colors uppercase tracking-wide">{currentStudents[0].name}</Link>
                     <p className="text-sm font-black text-[var(--gold)] mt-1">{currentStudents[0].score} PTS</p>
                   </div>
                 </motion.div>
@@ -303,7 +303,7 @@ export default function Leaderboard() {
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[var(--surface-2)] text-[var(--text)] rounded-full flex items-center justify-center text-sm shadow-[0_0_15px_rgba(0,255,198,0.3)] border border-[var(--emerald)]">🥉</div>
                     </div>
-                    <Link to={`/student/${currentStudents[2].username}`} className="text-sm font-bold text-[var(--text)] hover:text-[var(--gold)] truncate block transition-colors uppercase tracking-tight">{currentStudents[2].name}</Link>
+                    <Link to={`/student/${currentStudents[2].username || currentStudents[2].id}`} className="text-sm font-bold text-[var(--text)] hover:text-[var(--gold)] truncate block transition-colors uppercase tracking-tight">{currentStudents[2].name}</Link>
                     <p className="text-xs text-[var(--muted)] mt-1 font-black">{currentStudents[2].score} PTS</p>
                   </div>
                 </motion.div>
@@ -352,7 +352,7 @@ export default function Leaderboard() {
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <Link to={`/student/${student.username}`} className="flex items-center gap-4 group">
+                            <Link to={`/student/${student.username || student.id}`} className="flex items-center gap-4 group">
                               <div className="relative shadow-md rounded-full">
                                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[var(--border)]">
                                   {student.profile_photo ? (
@@ -478,7 +478,7 @@ export default function Leaderboard() {
                     </div>
                   </div>
                   <Link 
-                    to={`/student/${activity.user?.username}`}
+                    to={`/student/${activity.user?.username || activity.user?.id}`}
                     className="mt-3 block text-center text-[10px] font-bold py-1.5 rounded-lg bg-[var(--surface-2)] hover:bg-[var(--emerald)] hover:text-[var(--background)] transition-all uppercase tracking-widest"
                   >
                     View profile

@@ -1404,13 +1404,13 @@ export default function Dashboard() {
                       )}
                       {friends.map(friend => (
                         <div key={friend.friendship_id} className="flex items-center justify-between p-4 rounded-xl glass-card group hover:shadow-[0_0_15px_rgba(0,255,198,0.2)] transition-all">
-                          <a href={`/student/${friend.username}`} className="flex items-center gap-3 flex-1 min-w-0">
+                          <a href={`/student/${friend.username || friend.id}`} className="flex items-center gap-3 flex-1 min-w-0">
                             <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-[var(--background)] text-lg font-bold shrink-0">
                               {friend.profile_photo ? <img src={friend.profile_photo} className="w-full h-full object-cover rounded-full" /> : friend.name?.[0]}
                             </div>
                             <div className="min-w-0">
                               <p className="font-semibold text-[var(--text)] truncate">{friend.name}</p>
-                              <p className="text-xs text-[var(--cyan)]">@{friend.username}</p>
+                              <p className="text-xs text-[var(--cyan)]">@{friend.username || 'No username'}</p>
                             </div>
                           </a>
                           <button

@@ -215,12 +215,12 @@ async def get_friends_activity(user_id: str):
 
         # Get latest projects from friends
         projects_res = supabase.table("projects").select(
-            "*, users(name, username, profile_photo)"
+            "*, users(id, name, username, profile_photo)"
         ).in_("user_id", friend_ids).order("created_at", desc=True).limit(5).execute()
         
         # Get latest certificates from friends
         certs_res = supabase.table("certificates").select(
-            "*, users(name, username, profile_photo)"
+            "*, users(id, name, username, profile_photo)"
         ).in_("user_id", friend_ids).order("created_at", desc=True).limit(5).execute()
 
         activities = []

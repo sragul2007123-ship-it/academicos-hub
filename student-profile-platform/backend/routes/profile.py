@@ -59,10 +59,21 @@ async def get_profile(user_id: str):
 @router.get("/username/{username}")
 async def get_public_profile(username: str):
     try:
-        # Fetch everything in a single query using relations
-        res = supabase.table("users").select(
-            "*, profiles(*), skills(*), projects(*), certificates(*)"
-        ).eq("username", username).single().execute()
+        is_uuid = False
+        try:
+            uuid.UUID(username)
+            is_uuid = True
+        except ValueError:
+            pass
+            
+        if is_uuid:
+            res = supabase.table("users").select(
+                "*, profiles(*), skills(*), projects(*), certificates(*)"
+            ).eq("id", username).single().execute()
+        else:
+            res = supabase.table("users").select(
+                "*, profiles(*), skills(*), projects(*), certificates(*)"
+            ).eq("username", username).single().execute()
         
         if not res.data:
             raise HTTPException(status_code=404, detail="User not found")
@@ -132,6 +143,21 @@ async def update_profile(user_id: str, data: ProfileUpdate):
 @router.post("/{username}/views")
 async def increment_views(username: str):
     try:
+        is_uuid = False
+        try:
+            uuid.UUID(username)
+            is_uuid = True
+        except ValueError:
+            pass
+
+        if is_uuid:
+            profile_res = supabase.table("profiles").select("view_count").eq("user_id", username).single().execute()
+            if not profile_res.data:
+                raise Exception("Profile not found")
+            current_count = profile_res.data.get("view_count") or 0
+            update_res = supabase.table("profiles").update({"view_count": current_count + 1}).eq("user_id", username).execute()
+            return {"view_count": current_count + 1}
+
         # Use RPC for atomic increment (Best practice)
         res = supabase.rpc("increment_view_count", {"profile_username": username}).execute()
         return {"view_count": res.data}
