@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from database import supabase
 from pydantic import BaseModel
+from routes.leaderboard import clear_leaderboard_cache
 
 router = APIRouter()
 
@@ -133,6 +134,7 @@ async def send_friend_request(user_id: str, req: FriendRequest):
                 supabase.table("friendships").update(
                     {"status": "accepted"}
                 ).eq("id", existing2.data[0]["id"]).execute()
+                clear_leaderboard_cache()
                 return {"message": "Friend request accepted (mutual)"}
 
         # Create new friendship
@@ -161,6 +163,7 @@ async def accept_friend_request(friendship_id: str):
         if not res.data:
             raise HTTPException(status_code=404, detail="Request not found")
 
+        clear_leaderboard_cache()
         return {"message": "Friend request accepted"}
     except HTTPException:
         raise
@@ -191,6 +194,7 @@ async def remove_friend(friendship_id: str):
     """Remove a friend (unfriend)."""
     try:
         supabase.table("friendships").delete().eq("id", friendship_id).execute()
+        clear_leaderboard_cache()
         return {"message": "Friend removed"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

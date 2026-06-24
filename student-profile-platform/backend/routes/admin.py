@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from database import supabase
+from routes.leaderboard import clear_leaderboard_cache
 
 router = APIRouter()
 
@@ -27,6 +28,7 @@ async def delete_student(student_id: str):
         # This is the preferred way as it cleans up auth.users
         try:
             supabase.auth.admin.delete_user(student_id)
+            clear_leaderboard_cache()
             return {"message": "Success: Student deleted from auth and database"}
         except Exception as admin_e:
             print(f"Auth admin delete failed (likely missing service_role): {str(admin_e)}")
@@ -37,6 +39,7 @@ async def delete_student(student_id: str):
             res = supabase.table("users").delete().eq("id", student_id).execute()
             if not res.data:
                 raise Exception("User record not found or already deleted")
+            clear_leaderboard_cache()
             return {"message": "Success: Student record removed from database"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -7,6 +7,10 @@ router = APIRouter()
 # Simple memory cache for fast leaderboard loading
 _LEADERBOARD_CACHE = {}
 
+def clear_leaderboard_cache():
+    global _LEADERBOARD_CACHE
+    _LEADERBOARD_CACHE.clear()
+
 def get_badge_tier(rank: int) -> dict:
     """Determine badge tier and details based on rank"""
     if rank <= 10:
@@ -42,20 +46,24 @@ async def get_leaderboard():
         return _LEADERBOARD_CACHE["global"]["data"]
 
     try:
-        # Get users with profiles and associated records in a single query
-        # This significantly improves performance by avoiding N+1 queries
+        # Get users with profiles and associated counts in a single query
+        # This significantly improves performance by fetching counts directly
         res = supabase.table("users").select(
-            "*, profiles!inner(*), skills(id), projects(id), certificates(id)"
+            "id, name, username, profile_photo, profiles!inner(*), skills(count), projects(count), certificates(count)"
         ).execute()
         
         users = res.data
         enriched = []
         
         for user in users:
-            # Counts are derived from the length of the associated lists
-            skill_count = len(user.get("skills", []))
-            project_count = len(user.get("projects", []))
-            cert_count = len(user.get("certificates", []))
+            skills_data = user.get("skills", [])
+            skill_count = skills_data[0]["count"] if skills_data else 0
+            
+            projects_data = user.get("projects", [])
+            project_count = projects_data[0]["count"] if projects_data else 0
+            
+            certs_data = user.get("certificates", [])
+            cert_count = certs_data[0]["count"] if certs_data else 0
             
             # Weighted scoring system
             score = (skill_count * 2) + (project_count * 5) + (cert_count * 3)
@@ -95,6 +103,12 @@ async def get_leaderboard():
         raise HTTPException(status_code=500, detail="Failed to fetch leaderboard")
 
 
+@router.post("/refresh")
+async def refresh_leaderboard():
+    clear_leaderboard_cache()
+    return {"message": "Leaderboard cache cleared"}
+
+
 @router.get("/friends/{user_id}")
 async def get_friends_leaderboard(user_id: str):
     """Get leaderboard filtered to only show friends of the given user."""
@@ -124,18 +138,24 @@ async def get_friends_leaderboard(user_id: str):
         if not friend_ids:
             friend_ids = {user_id}
 
-        # Get all users with profiles
+        # Get all users with profiles and counts
         res = supabase.table("users").select(
-            "*, profiles!inner(*), skills(id), projects(id), certificates(id)"
+            "id, name, username, profile_photo, profiles!inner(*), skills(count), projects(count), certificates(count)"
         ).in_("id", list(friend_ids)).execute()
 
         users = res.data
         enriched = []
 
         for user in users:
-            skill_count = len(user.get("skills", []))
-            project_count = len(user.get("projects", []))
-            cert_count = len(user.get("certificates", []))
+            skills_data = user.get("skills", [])
+            skill_count = skills_data[0]["count"] if skills_data else 0
+            
+            projects_data = user.get("projects", [])
+            project_count = projects_data[0]["count"] if projects_data else 0
+            
+            certs_data = user.get("certificates", [])
+            cert_count = certs_data[0]["count"] if certs_data else 0
+            
             score = (skill_count * 2) + (project_count * 5) + (cert_count * 3)
 
             enriched.append({

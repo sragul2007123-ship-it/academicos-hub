@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from typing import List
 from database import supabase
 from models.schemas import CertificateCreate
+from routes.leaderboard import clear_leaderboard_cache
 
 router = APIRouter()
 
@@ -21,6 +22,7 @@ async def add_certificate(user_id: str, certificate: CertificateCreate):
         res = supabase.table("certificates").insert(data).execute()
         if not res.data:
             raise Exception("Failed to insert certificate")
+        clear_leaderboard_cache()
         return res.data[0]
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -29,6 +31,7 @@ async def add_certificate(user_id: str, certificate: CertificateCreate):
 async def delete_certificate(certificate_id: str):
     try:
         supabase.table("certificates").delete().eq("id", certificate_id).execute()
+        clear_leaderboard_cache()
         return {"message": "Certificate deleted"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from typing import List
 from database import supabase
 from models.schemas import ProjectCreate
+from routes.leaderboard import clear_leaderboard_cache
 
 router = APIRouter()
 
@@ -21,6 +22,7 @@ async def add_project(user_id: str, project: ProjectCreate):
         res = supabase.table("projects").insert(data).execute()
         if not res.data:
             raise Exception("Failed to insert project")
+        clear_leaderboard_cache()
         return res.data[0]
     except Exception as e:
         print(f"Project add error: {str(e)}")
@@ -33,6 +35,7 @@ async def update_project(project_id: str, project: ProjectCreate):
         res = supabase.table("projects").update(data).eq("id", project_id).execute()
         if not res.data:
             raise Exception("Project not found or no changes made")
+        clear_leaderboard_cache()
         return res.data[0]
     except Exception as e:
         print(f"Project update error: {str(e)}")
@@ -42,6 +45,7 @@ async def update_project(project_id: str, project: ProjectCreate):
 async def delete_project(project_id: str):
     try:
         supabase.table("projects").delete().eq("id", project_id).execute()
+        clear_leaderboard_cache()
         return {"message": "Project deleted"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -20,6 +20,7 @@ export default function Leaderboard() {
   const [friendStudents, setFriendStudents] = useState([])
   const [friendsActivity, setFriendsActivity] = useState([])
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const [activeTab, setActiveTab] = useState('global') // 'global' or 'friends'
   const [myStats, setMyStats] = useState({ globalRank: 0, friendsRank: 0 })
 
@@ -29,17 +30,31 @@ export default function Leaderboard() {
 
   // Global ranking is always default preference
 
-  const loadAllData = async () => {
-    setLoading(true)
-    try {
-      const globalData = await api.getLeaderboard()
-      setGlobalStudents(globalData)
+  const loadAllData = async (force = false) => {
+    if (force) {
+      setRefreshing(true)
+      try {
+        await api.refreshLeaderboard()
+      } catch (err) {
+        console.error('Error refreshing backend leaderboard:', err)
+      }
+    } else if (globalStudents.length === 0) {
+      setLoading(true)
+    }
 
+    try {
+      const globalPromise = api.getLeaderboard(force)
+      const friendsPromise = user ? api.getFriendsLeaderboard(user.id, force) : Promise.resolve([])
+      const activityPromise = user ? api.getFriendsActivity(user.id, force) : Promise.resolve([])
+
+      const [globalData, friendsData, activityData] = await Promise.all([
+        globalPromise,
+        friendsPromise,
+        activityPromise
+      ])
+
+      setGlobalStudents(globalData)
       if (user) {
-        const [friendsData, activityData] = await Promise.all([
-          api.getFriendsLeaderboard(user.id),
-          api.getFriendsActivity(user.id)
-        ])
         setFriendStudents(friendsData)
         setFriendsActivity(activityData)
 
@@ -50,8 +65,10 @@ export default function Leaderboard() {
       }
     } catch (err) {
       console.error('Error loading leaderboard:', err)
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
     }
-    setLoading(false)
   }
 
   const getRankBadge = (index) => {
@@ -139,7 +156,7 @@ export default function Leaderboard() {
         )}
 
         {/* Tabs Control */}
-        <div className="flex justify-center mb-10">
+        <div className="flex justify-center items-center gap-4 mb-10">
           <div className="bg-[var(--surface-2)]/50 backdrop-blur-md p-1.5 rounded-2xl flex gap-2 border border-white/20 dark:border-surface-700 shadow-xl">
             {true && (
               <button
@@ -164,6 +181,32 @@ export default function Leaderboard() {
               🌍 <span className="hidden sm:inline">Global Rankings</span> <span className="sm:hidden">Global</span>
             </button>
           </div>
+
+          <button
+            onClick={() => loadAllData(true)}
+            disabled={refreshing}
+            className={`p-3.5 rounded-2xl bg-[var(--surface-2)]/50 backdrop-blur-md border border-white/20 dark:border-surface-700 hover:bg-[var(--glass)] hover:scale-105 active:scale-95 text-[var(--text)] transition-all shadow-xl flex items-center justify-center group ${
+              refreshing ? 'cursor-not-allowed opacity-75' : ''
+            }`}
+            title="Refresh Leaderboard"
+          >
+            <svg
+              className={`w-5 h-5 text-[var(--muted)] group-hover:text-[var(--emerald)] transition-colors ${
+                refreshing ? 'animate-spin text-[var(--emerald)]' : ''
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M21 20v-5h-.581m0 0a8.003 8.003 0 11-15.357-2"
+              />
+            </svg>
+          </button>
         </div>
 
         {/* Podium for Top 3 */}

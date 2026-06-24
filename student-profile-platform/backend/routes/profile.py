@@ -3,6 +3,7 @@ from typing import List, Optional
 from database import supabase
 from models.schemas import ProfileBase, ProfileUpdate, UserBase
 import uuid
+from routes.leaderboard import clear_leaderboard_cache
 
 router = APIRouter()
 
@@ -117,6 +118,7 @@ async def update_profile(user_id: str, data: ProfileUpdate):
             if not res.data:
                 raise Exception("Failed to save profile details")
             
+        clear_leaderboard_cache()
         return {"message": "Profile saved successfully"}
     except Exception as e:
         print(f"Update profile error for user {user_id}: {str(e)}")
