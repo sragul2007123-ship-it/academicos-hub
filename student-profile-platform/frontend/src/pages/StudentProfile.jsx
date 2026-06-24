@@ -8,6 +8,17 @@ import LearningHub from './LearningHub'
 import SkillConstellation from '../components/SkillConstellation'
 import PostItem from '../components/PostItem'
 
+const themeColorsMap = {
+  primary: { emerald: '#00FFC6', cyan: '#00D4FF' }, // Neo Aurora default (emerald-cyan)
+  emerald: { emerald: '#10b981', cyan: '#14b8a6' },
+  rose: { emerald: '#f43f5e', cyan: '#ec4899' },
+  amber: { emerald: '#f59e0b', cyan: '#f97316' },
+  violet: { emerald: '#8b5cf6', cyan: '#d946ef' },
+  cyan: { emerald: '#06b6d4', cyan: '#3b82f6' },
+  lime: { emerald: '#84cc16', cyan: '#22c55e' },
+  indigo: { emerald: '#6366f1', cyan: '#3b82f6' }
+};
+
 export default function StudentProfile() {
   const { username } = useParams()
   const { user } = useAuth()
@@ -149,13 +160,55 @@ export default function StudentProfile() {
     </div>
   )
 
+  const themeColors = themeColorsMap[profileData?.theme_color] || themeColorsMap.primary;
+  const layoutStyle = profileData?.layout_style || 'default';
+
+  // Layout modifier classes
+  let containerClass = "bg-[var(--glass)] backdrop-blur-2xl rounded-[2rem] border border-[var(--border)] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden mb-8";
+  let coverClass = "h-56 w-full bg-gradient-to-br from-[var(--emerald)]/20 via-[var(--cyan)]/10 to-[var(--background)] relative overflow-hidden";
+  let headerContentClass = "px-8 pb-8 relative";
+  let avatarRowClass = "flex justify-between items-end -mt-20 mb-6 relative z-10";
+  let actionButtonsClass = "flex gap-3 mb-2";
+  let bioClass = "text-gray-300 text-sm sm:text-base leading-relaxed max-w-2xl mb-8 font-medium";
+  let socialContainerClass = "flex gap-3";
+  let detailsTextAlignmentClass = "text-left";
+  let usernameRowClass = "text-gray-400 font-medium text-sm mb-6 flex items-center gap-2";
+
+  if (layoutStyle === 'minimal') {
+    containerClass = "bg-transparent rounded-none border-none shadow-none mb-8";
+    coverClass = "hidden";
+    headerContentClass = "px-4 pb-8 relative text-center flex flex-col items-center";
+    avatarRowClass = "flex flex-col items-center gap-6 mb-6 relative z-10";
+    actionButtonsClass = "flex gap-3";
+    bioClass = "text-gray-300 text-sm sm:text-base leading-relaxed max-w-2xl mb-8 font-medium text-center mx-auto";
+    socialContainerClass = "flex gap-3 justify-center";
+    detailsTextAlignmentClass = "text-center flex flex-col items-center justify-center";
+    usernameRowClass = "text-gray-400 font-medium text-sm mb-6 flex items-center justify-center gap-2";
+  } else if (layoutStyle === 'creative') {
+    containerClass = "bg-gradient-to-br from-[var(--surface-2)]/80 to-[var(--surface)]/90 backdrop-blur-3xl rounded-[3rem] border border-[var(--cyan)]/30 shadow-[0_0_60px_rgba(0,212,255,0.15)] overflow-hidden mb-8";
+    coverClass = "h-64 w-full bg-gradient-to-tr from-[var(--emerald)]/30 via-[var(--cyan)]/25 to-[var(--background)] relative overflow-hidden";
+  } else if (layoutStyle === 'professional') {
+    containerClass = "bg-[var(--surface-2)] rounded-2xl border border-[var(--border)] shadow-xl overflow-hidden mb-8";
+    coverClass = "h-40 w-full bg-gradient-to-r from-slate-800 to-slate-900 relative overflow-hidden border-b border-[var(--border)]";
+    avatarRowClass = "flex justify-between items-end -mt-16 mb-4 relative z-10";
+    headerContentClass = "px-6 pb-6 relative";
+  }
+
   return (
-    <div className="min-h-screen pt-20 pb-12 transition-colors duration-300 relative overflow-hidden">
+    <div 
+      className="min-h-screen pt-20 pb-12 transition-colors duration-300 relative overflow-hidden"
+      style={{
+        '--emerald': themeColors.emerald,
+        '--cyan': themeColors.cyan,
+      }}
+    >
       {/* Background Orbs */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[var(--emerald)]/10 rounded-full blur-[120px] mix-blend-screen animate-float"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[var(--cyan)]/10 rounded-full blur-[150px] mix-blend-screen animate-float-delayed"></div>
-      </div>
+      {layoutStyle !== 'minimal' && layoutStyle !== 'professional' && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className={`absolute top-[-10%] right-[-5%] ${layoutStyle === 'creative' ? 'w-[700px] h-[700px] bg-[var(--emerald)]/20 blur-[150px]' : 'w-[500px] h-[500px] bg-[var(--emerald)]/10 blur-[120px]'} rounded-full mix-blend-screen animate-float`}></div>
+          <div className={`absolute bottom-[-10%] left-[-5%] ${layoutStyle === 'creative' ? 'w-[800px] h-[800px] bg-[var(--cyan)]/20 blur-[180px]' : 'w-[600px] h-[600px] bg-[var(--cyan)]/10 blur-[150px]'} rounded-full mix-blend-screen animate-float-delayed`}></div>
+        </div>
+      )}
 
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 relative z-10">
         
@@ -163,17 +216,17 @@ export default function StudentProfile() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[var(--glass)] backdrop-blur-2xl rounded-[2rem] border border-[var(--border)] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden mb-8"
+          className={containerClass}
         >
           {/* Cover Image */}
-          <div className="h-56 w-full bg-gradient-to-br from-[var(--emerald)]/20 via-[var(--cyan)]/10 to-[var(--background)] relative overflow-hidden">
+          <div className={coverClass}>
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
             <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[var(--background)] to-transparent"></div>
           </div>
           
-          <div className="px-8 pb-8 relative">
+          <div className={headerContentClass}>
             {/* Avatar overlapping cover */}
-            <div className="flex justify-between items-end -mt-20 mb-6 relative z-10">
+            <div className={avatarRowClass}>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 className="w-36 h-36 rounded-3xl p-1.5 bg-gradient-to-br from-[var(--emerald)] via-[var(--cyan)] to-[var(--emerald)] shadow-2xl"
@@ -187,7 +240,7 @@ export default function StudentProfile() {
                 </div>
               </motion.div>
               
-              <div className="flex gap-3 mb-2">
+              <div className={actionButtonsClass}>
                 {user && user.id === profileData?.id ? (
                   <Link to="/dashboard" className="px-6 py-3 bg-white/5 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white/10 transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)]">
                     Edit Profile
@@ -226,22 +279,22 @@ export default function StudentProfile() {
             </div>
 
             {/* User Details */}
-            <div>
+            <div className={detailsTextAlignmentClass}>
               <h1 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight leading-tight mb-1">
                 {profileData?.name}
               </h1>
-              <p className="text-gray-400 font-medium text-sm mb-6 flex items-center gap-2">
+              <p className={usernameRowClass}>
                 @{profileData?.username} 
                 <span className="w-1 h-1 rounded-full bg-gray-600"></span> 
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400 font-bold tracking-wide uppercase text-xs">{profileData?.role}</span>
               </p>
               
-              <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-2xl mb-8 font-medium">
+              <p className={bioClass}>
                 {profileData?.about}
               </p>
 
               {/* Social Links */}
-              <div className="flex gap-3">
+              <div className={socialContainerClass}>
                 {profileData?.linkedin && (
                   <motion.a whileHover={{ scale: 1.05 }} href={profileData.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-xl text-sm font-bold hover:bg-blue-500/20 transition-colors">
                     LinkedIn
